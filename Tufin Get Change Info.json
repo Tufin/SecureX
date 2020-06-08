@@ -1,0 +1,337 @@
+{
+  "workflow": {
+    "unique_name": "definition_workflow_01G5GLWPLYHPD7OruXaaPUIyyU1g56B5yhw",
+    "name": "Tufin Get Change Info",
+    "title": "Tufin Get Change Info",
+    "type": "generic.workflow",
+    "base_type": "workflow",
+    "variables": [
+      {
+        "schema_id": "datatype.integer",
+        "properties": {
+          "value": 0,
+          "scope": "input",
+          "name": "Ticket ID",
+          "type": "datatype.integer",
+          "description": "SecureChange ticket ID",
+          "is_required": false
+        },
+        "unique_name": "variable_workflow_01G5GMLE3D4125e1gnWVqEzTYX34L0TTC3l",
+        "object_type": "variable_workflow"
+      },
+      {
+        "schema_id": "tabletype_01G5GQN8CKXEZ0vuBnBvOcOxJWxiTOLzK3J",
+        "properties": {
+          "scope": "output",
+          "name": "Tufin Ticket",
+          "type": "datatype.table",
+          "description": "Tufin SecureChange Ticket",
+          "is_required": false
+        },
+        "unique_name": "variable_workflow_01G5GVUF7HSGZ49OjoFyXMu6GSQFXCHSlTP",
+        "object_type": "variable_workflow"
+      }
+    ],
+    "properties": {
+      "atomic": {
+        "is_atomic": false
+      },
+      "delete_workflow_instance": false,
+      "description": "Get information on a SecureChange Ticket",
+      "display_name": "Tufin Get Change Info",
+      "runtime_user": {
+        "override_target_runtime_user": false,
+        "specify_on_workflow_start": false,
+        "target_default": true
+      },
+      "target": {
+        "target_type": "web-service.endpoint",
+        "specify_on_workflow_start": true
+      }
+    },
+    "object_type": "definition_workflow",
+    "actions": [
+      {
+        "unique_name": "definition_activity_01G5GMUNQLNF25DuWHuQR3ezi6dgcUsE99q",
+        "name": "HTTP Request",
+        "title": "Get Ticket Information",
+        "type": "web-service.http_request",
+        "base_type": "activity",
+        "properties": {
+          "accept": "application/json",
+          "action_timeout": 180,
+          "allow_auto_redirect": true,
+          "content_type": "application/json",
+          "continue_on_error_status_code": false,
+          "continue_on_failure": false,
+          "custom_headers": [
+            {
+              "name": "cache-control",
+              "value": "no-cache"
+            }
+          ],
+          "description": "Get SecureChange ticket information",
+          "display_name": "Get Ticket Information",
+          "method": "GET",
+          "relative_url": "/securechangeworkflow/api/securechange/tickets/$workflow.definition_workflow_01G5GLWPLYHPD7OruXaaPUIyyU1g56B5yhw.input.variable_workflow_01G5GMLE3D4125e1gnWVqEzTYX34L0TTC3l$",
+          "runtime_user": {
+            "override_target_runtime_user": false,
+            "target_default": true
+          },
+          "skip_execution": false,
+          "target": {
+            "override_workflow_target": false,
+            "override_workflow_target_group_criteria": false,
+            "use_workflow_target": true,
+            "use_workflow_target_group": false
+          }
+        },
+        "object_type": "definition_activity"
+      },
+      {
+        "unique_name": "definition_activity_01G5GRC4ZUSAC6OwNo35JpugX3kxYezU4Mr",
+        "name": "JSONPath Query",
+        "title": "Read Ticket Details",
+        "type": "corejava.jsonpathquery",
+        "base_type": "activity",
+        "properties": {
+          "action_timeout": 180,
+          "continue_on_failure": false,
+          "description": "Read ticket details from results",
+          "display_name": "Read Ticket Details",
+          "input_json": "$activity.definition_activity_01G5GMUNQLNF25DuWHuQR3ezi6dgcUsE99q.output.response_body$",
+          "jsonpath_queries": [
+            {
+              "jsonpath_query": "$.ticket.id",
+              "jsonpath_query_name": "id",
+              "jsonpath_query_type": "integer"
+            },
+            {
+              "jsonpath_query": "$.ticket.subject",
+              "jsonpath_query_name": "subject",
+              "jsonpath_query_type": "string"
+            },
+            {
+              "jsonpath_query": "$.ticket.requester",
+              "jsonpath_query_name": "requester",
+              "jsonpath_query_type": "string"
+            },
+            {
+              "jsonpath_query": "$.ticket.requester_id",
+              "jsonpath_query_name": "requester_id",
+              "jsonpath_query_type": "integer"
+            },
+            {
+              "jsonpath_query": "$.ticket.priority",
+              "jsonpath_query_name": "priority",
+              "jsonpath_query_type": "string"
+            },
+            {
+              "jsonpath_query": "$.ticket.status",
+              "jsonpath_query_name": "status",
+              "jsonpath_query_type": "string"
+            },
+            {
+              "jsonpath_query": "$.ticket.domain_name",
+              "jsonpath_query_name": "domain_name",
+              "jsonpath_query_type": "string"
+            },
+            {
+              "jsonpath_query": "$.ticket.sla_status",
+              "jsonpath_query_name": "sla_status",
+              "jsonpath_query_type": "string"
+            },
+            {
+              "jsonpath_query": "$.ticket.sla_outcome",
+              "jsonpath_query_name": "sla_outcome",
+              "jsonpath_query_type": "string"
+            },
+            {
+              "jsonpath_query": "$.ticket.workflow.name",
+              "jsonpath_query_name": "workflow_name",
+              "jsonpath_query_type": "string"
+            },
+            {
+              "jsonpath_query": "$.ticket.current_step.name",
+              "jsonpath_query_name": "current_step_name",
+              "jsonpath_query_type": "string"
+            },
+            {
+              "jsonpath_query": "$.ticket.comments",
+              "jsonpath_query_name": "comments",
+              "jsonpath_query_type": "string"
+            }
+          ],
+          "skip_execution": false
+        },
+        "object_type": "definition_activity"
+      },
+      {
+        "unique_name": "definition_activity_01G5GZWE2RWCT6cbaG2hWcT1UjjkN8pro9H",
+        "name": "Add Row to Table",
+        "title": "Add Row to Table",
+        "type": "core.addrowtotable",
+        "base_type": "activity",
+        "properties": {
+          "action_timeout": 180,
+          "continue_on_failure": false,
+          "description": "Add the ticket to the output table",
+          "display_name": "Add Row to Table",
+          "input_table": "$workflow.definition_workflow_01G5GLWPLYHPD7OruXaaPUIyyU1g56B5yhw.output.variable_workflow_01G5GVUF7HSGZ49OjoFyXMu6GSQFXCHSlTP$",
+          "row": [
+            {
+              "key": "id",
+              "type": "integer",
+              "value": "$activity.definition_activity_01G5GRC4ZUSAC6OwNo35JpugX3kxYezU4Mr.output.jsonpath_queries.id$"
+            },
+            {
+              "key": "subject",
+              "type": "string",
+              "value": "$activity.definition_activity_01G5GRC4ZUSAC6OwNo35JpugX3kxYezU4Mr.output.jsonpath_queries.subject$"
+            },
+            {
+              "key": "requester",
+              "type": "string",
+              "value": "$activity.definition_activity_01G5GRC4ZUSAC6OwNo35JpugX3kxYezU4Mr.output.jsonpath_queries.requester$"
+            },
+            {
+              "key": "requester_id",
+              "type": "integer",
+              "value": "$activity.definition_activity_01G5GRC4ZUSAC6OwNo35JpugX3kxYezU4Mr.output.jsonpath_queries.requester_id$"
+            },
+            {
+              "key": "priority",
+              "type": "string",
+              "value": "$activity.definition_activity_01G5GRC4ZUSAC6OwNo35JpugX3kxYezU4Mr.output.jsonpath_queries.priority$"
+            },
+            {
+              "key": "status",
+              "type": "string",
+              "value": "$activity.definition_activity_01G5GRC4ZUSAC6OwNo35JpugX3kxYezU4Mr.output.jsonpath_queries.status$"
+            },
+            {
+              "key": "domain_name",
+              "type": "string",
+              "value": "$activity.definition_activity_01G5GRC4ZUSAC6OwNo35JpugX3kxYezU4Mr.output.jsonpath_queries.domain_name$"
+            },
+            {
+              "key": "sla_status",
+              "type": "string",
+              "value": "$activity.definition_activity_01G5GRC4ZUSAC6OwNo35JpugX3kxYezU4Mr.output.jsonpath_queries.sla_status$"
+            },
+            {
+              "key": "sla_outcome",
+              "type": "string",
+              "value": "$activity.definition_activity_01G5GRC4ZUSAC6OwNo35JpugX3kxYezU4Mr.output.jsonpath_queries.sla_outcome$"
+            },
+            {
+              "key": "workflow_name",
+              "type": "string",
+              "value": "$activity.definition_activity_01G5GRC4ZUSAC6OwNo35JpugX3kxYezU4Mr.output.jsonpath_queries.workflow_name$"
+            },
+            {
+              "key": "current_step_name",
+              "type": "string",
+              "value": "$activity.definition_activity_01G5GRC4ZUSAC6OwNo35JpugX3kxYezU4Mr.output.jsonpath_queries.current_step_name$"
+            },
+            {
+              "key": "comments",
+              "type": "string",
+              "value": "$activity.definition_activity_01G5GRC4ZUSAC6OwNo35JpugX3kxYezU4Mr.output.jsonpath_queries.comments$"
+            }
+          ],
+          "skip_execution": false
+        },
+        "object_type": "definition_activity"
+      }
+    ],
+    "categories": [
+      "category_01G4JLUINA0E65x8iCa6Behj8y9V0ZE9f8O"
+    ]
+  },
+  "categories": {
+    "category_01G4JLUINA0E65x8iCa6Behj8y9V0ZE9f8O": {
+      "unique_name": "category_01G4JLUINA0E65x8iCa6Behj8y9V0ZE9f8O",
+      "name": "Tufin",
+      "title": "Tufin",
+      "type": "basic.category",
+      "base_type": "category",
+      "description": "Tufin Orchestration Suite",
+      "category_type": "custom",
+      "object_type": "category"
+    }
+  },
+  "table_types": {
+    "tabletype_01G5GQN8CKXEZ0vuBnBvOcOxJWxiTOLzK3J": {
+      "unique_name": "tabletype_01G5GQN8CKXEZ0vuBnBvOcOxJWxiTOLzK3J",
+      "data_type": "datatype.tabletype",
+      "display_name": "Tufin Ticket",
+      "description": "Tufin SecureChange ticket",
+      "columns": [
+        {
+          "name": "current_step_name",
+          "title": "current_step_name",
+          "type": "string"
+        },
+        {
+          "is_required": true,
+          "name": "id",
+          "title": "id",
+          "type": "integer"
+        },
+        {
+          "name": "requester",
+          "title": "requester",
+          "type": "string"
+        },
+        {
+          "name": "requester_id",
+          "title": "requester_id",
+          "type": "integer"
+        },
+        {
+          "name": "status",
+          "title": "status",
+          "type": "string"
+        },
+        {
+          "name": "workflow_name",
+          "title": "workflow_name",
+          "type": "string"
+        },
+        {
+          "name": "comments",
+          "title": "comments",
+          "type": "string"
+        },
+        {
+          "name": "domain_name",
+          "title": "domain_name",
+          "type": "string"
+        },
+        {
+          "name": "priority",
+          "title": "priority",
+          "type": "string"
+        },
+        {
+          "name": "sla_outcome",
+          "title": "sla_outcome",
+          "type": "string"
+        },
+        {
+          "name": "sla_status",
+          "title": "sla_status",
+          "type": "string"
+        },
+        {
+          "name": "subject",
+          "title": "subject",
+          "type": "string"
+        }
+      ],
+      "base_type": "datatype",
+      "object_type": "tabletype"
+    }
+  }
+}

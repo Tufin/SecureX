@@ -1,0 +1,755 @@
+{
+  "workflow": {
+    "unique_name": "definition_workflow_01G4JWPBPAAUJ1O8q0zJSLLwwuypCTHHepZ",
+    "name": "Tufin Search Devices",
+    "title": "Tufin Search Devices",
+    "type": "generic.workflow",
+    "base_type": "workflow",
+    "variables": [
+      {
+        "schema_id": "datatype.string",
+        "properties": {
+          "value": "",
+          "scope": "input",
+          "name": "IP Address",
+          "type": "datatype.string",
+          "description": "Device IP Address",
+          "is_required": false
+        },
+        "unique_name": "variable_workflow_01G4JXZ3GQPBA3pAbSxY2FanbgfIO2j73Qi",
+        "object_type": "variable_workflow"
+      },
+      {
+        "schema_id": "datatype.string",
+        "properties": {
+          "value": "",
+          "scope": "input",
+          "name": "Vendor",
+          "type": "datatype.string",
+          "description": "Device Vendor",
+          "is_required": false
+        },
+        "unique_name": "variable_workflow_01G4JY8B3O2DB0NHkGTz5izOQvrAYqmg2XZ",
+        "object_type": "variable_workflow"
+      },
+      {
+        "schema_id": "datatype.string",
+        "properties": {
+          "value": "",
+          "scope": "input",
+          "name": "Model",
+          "type": "datatype.string",
+          "description": "Device Model",
+          "is_required": false
+        },
+        "unique_name": "variable_workflow_01G4JYFPWF94T6CnvK5I5B9iowRzbxOI3JH",
+        "object_type": "variable_workflow"
+      },
+      {
+        "schema_id": "datatype.string",
+        "properties": {
+          "value": "",
+          "scope": "local",
+          "name": "Query",
+          "type": "datatype.string",
+          "description": "Device query string",
+          "is_required": false
+        },
+        "unique_name": "variable_workflow_01G4SL8PGWBZJ39rD2pdf8FH8MjxKHED2uC",
+        "object_type": "variable_workflow"
+      },
+      {
+        "schema_id": "tabletype_01G4SWGU4FCWO5Ba1Y4jyaBd34T8j1pCQr9",
+        "properties": {
+          "scope": "output",
+          "name": "Tufin Devices",
+          "type": "datatype.table",
+          "description": "Tufin Devices",
+          "is_required": false
+        },
+        "unique_name": "variable_workflow_01G5G6WGWKZ9P30HhmDsHKDQmywxRGbldzM",
+        "object_type": "variable_workflow"
+      },
+      {
+        "schema_id": "datatype.string",
+        "properties": {
+          "value": "",
+          "scope": "input",
+          "name": "Name",
+          "type": "datatype.string",
+          "description": "Device Name",
+          "is_required": false
+        },
+        "unique_name": "variable_workflow_01G4JXOMXWS6K3QjOGdxrcMatrwqOHcSXYf",
+        "object_type": "variable_workflow"
+      }
+    ],
+    "properties": {
+      "atomic": {
+        "is_atomic": false
+      },
+      "delete_workflow_instance": false,
+      "display_name": "Tufin Search Devices",
+      "runtime_user": {
+        "override_target_runtime_user": false,
+        "specify_on_workflow_start": false,
+        "target_default": true
+      },
+      "target": {
+        "target_type": "web-service.endpoint",
+        "specify_on_workflow_start": true
+      }
+    },
+    "object_type": "definition_workflow",
+    "actions": [
+      {
+        "unique_name": "definition_activity_01G4JYTCFCAMX0gmX2iRDgwoy1Cfbi7fRXx",
+        "name": "Condition Block",
+        "title": "Valid Search Parameters",
+        "type": "logic.if_else",
+        "base_type": "activity",
+        "properties": {
+          "continue_on_failure": false,
+          "description": "At least one of the four optional search parameters must be provided",
+          "display_name": "Valid Search Parameters",
+          "skip_execution": false
+        },
+        "object_type": "definition_activity",
+        "blocks": [
+          {
+            "unique_name": "definition_activity_01G4JYTN34DRD1b4qOJHJ2kT532HuCYGrtC",
+            "name": "Condition Branch",
+            "title": "Valid",
+            "type": "logic.condition_block",
+            "base_type": "activity",
+            "properties": {
+              "condition": {
+                "left_operand": {
+                  "left_operand": {
+                    "left_operand": {
+                      "left_operand": "$workflow.definition_workflow_01G4JWPBPAAUJ1O8q0zJSLLwwuypCTHHepZ.input.variable_workflow_01G4JXZ3GQPBA3pAbSxY2FanbgfIO2j73Qi$",
+                      "operator": "ne",
+                      "right_operand": ""
+                    },
+                    "operator": "or",
+                    "right_operand": {
+                      "left_operand": "$workflow.definition_workflow_01G4JWPBPAAUJ1O8q0zJSLLwwuypCTHHepZ.input.variable_workflow_01G4JYFPWF94T6CnvK5I5B9iowRzbxOI3JH$",
+                      "operator": "ne",
+                      "right_operand": ""
+                    }
+                  },
+                  "operator": "or",
+                  "right_operand": {
+                    "left_operand": "$workflow.definition_workflow_01G4JWPBPAAUJ1O8q0zJSLLwwuypCTHHepZ.input.variable_workflow_01G4JXOMXWS6K3QjOGdxrcMatrwqOHcSXYf$",
+                    "operator": "ne",
+                    "right_operand": ""
+                  }
+                },
+                "operator": "or",
+                "right_operand": {
+                  "left_operand": "$workflow.definition_workflow_01G4JWPBPAAUJ1O8q0zJSLLwwuypCTHHepZ.input.variable_workflow_01G4JY8B3O2DB0NHkGTz5izOQvrAYqmg2XZ$",
+                  "operator": "ne",
+                  "right_operand": ""
+                }
+              },
+              "continue_on_failure": false,
+              "display_name": "Valid",
+              "skip_execution": false
+            },
+            "object_type": "definition_activity",
+            "actions": [
+              {
+                "unique_name": "definition_activity_01G4SLDOFI6DJ6ZUAlFAPBWfAbm6bGkk8dg",
+                "name": "Condition Block",
+                "title": "Search Name Provided",
+                "type": "logic.if_else",
+                "base_type": "activity",
+                "properties": {
+                  "continue_on_failure": true,
+                  "description": "Is the name search parameter provided?",
+                  "display_name": "Search Name Provided",
+                  "skip_execution": false
+                },
+                "object_type": "definition_activity",
+                "blocks": [
+                  {
+                    "unique_name": "definition_activity_01G4SLE9BA93Q7KE42BSpGNNU4hRscvygY1",
+                    "name": "Condition Branch",
+                    "title": "Yes",
+                    "type": "logic.condition_block",
+                    "base_type": "activity",
+                    "properties": {
+                      "condition": {
+                        "left_operand": "$workflow.definition_workflow_01G4JWPBPAAUJ1O8q0zJSLLwwuypCTHHepZ.input.variable_workflow_01G4JXOMXWS6K3QjOGdxrcMatrwqOHcSXYf$",
+                        "operator": "ne",
+                        "right_operand": ""
+                      },
+                      "continue_on_failure": true,
+                      "description": "Name search parameter provided",
+                      "display_name": "Yes",
+                      "skip_execution": false
+                    },
+                    "object_type": "definition_activity",
+                    "actions": [
+                      {
+                        "unique_name": "definition_activity_01G4SMPJ6CZZ950kkoO0cjtcHhaCbWoPW7x",
+                        "name": "Set Variables",
+                        "title": "Update Query with Name",
+                        "type": "core.set_multiple_variables",
+                        "base_type": "activity",
+                        "properties": {
+                          "continue_on_failure": false,
+                          "description": "Update the query string with the name search parameter",
+                          "display_name": "Update Query with Name",
+                          "skip_execution": false,
+                          "variables_to_update": [
+                            {
+                              "variable_to_update": "$workflow.definition_workflow_01G4JWPBPAAUJ1O8q0zJSLLwwuypCTHHepZ.local.variable_workflow_01G4SL8PGWBZJ39rD2pdf8FH8MjxKHED2uC$",
+                              "variable_value_new": "$workflow.definition_workflow_01G4JWPBPAAUJ1O8q0zJSLLwwuypCTHHepZ.local.variable_workflow_01G4SL8PGWBZJ39rD2pdf8FH8MjxKHED2uC$&name=$workflow.definition_workflow_01G4JWPBPAAUJ1O8q0zJSLLwwuypCTHHepZ.input.variable_workflow_01G4JXOMXWS6K3QjOGdxrcMatrwqOHcSXYf$"
+                            }
+                          ]
+                        },
+                        "object_type": "definition_activity"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "unique_name": "definition_activity_01G4SNNFE8K284X0S1DhvvKSdWHvQYNFgvU",
+                "name": "Condition Block",
+                "title": "Search IP Provided",
+                "type": "logic.if_else",
+                "base_type": "activity",
+                "properties": {
+                  "continue_on_failure": true,
+                  "description": "Is the IP search parameter provided?",
+                  "display_name": "Search IP Provided",
+                  "skip_execution": false
+                },
+                "object_type": "definition_activity",
+                "blocks": [
+                  {
+                    "unique_name": "definition_activity_01G4SNNQFVAIS7fBNmXFEBMAdWxT9jnZKhJ",
+                    "name": "Condition Branch",
+                    "title": "Yes",
+                    "type": "logic.condition_block",
+                    "base_type": "activity",
+                    "properties": {
+                      "condition": {
+                        "left_operand": "$workflow.definition_workflow_01G4JWPBPAAUJ1O8q0zJSLLwwuypCTHHepZ.input.variable_workflow_01G4JXZ3GQPBA3pAbSxY2FanbgfIO2j73Qi$",
+                        "operator": "ne",
+                        "right_operand": ""
+                      },
+                      "continue_on_failure": true,
+                      "description": "IP search parameter provided",
+                      "display_name": "Yes",
+                      "skip_execution": false
+                    },
+                    "object_type": "definition_activity",
+                    "actions": [
+                      {
+                        "unique_name": "definition_activity_01G4SNO2MCLS76XPfXohewwr5GRgTP2tvrW",
+                        "name": "Set Variables",
+                        "title": "Update Query with IP",
+                        "type": "core.set_multiple_variables",
+                        "base_type": "activity",
+                        "properties": {
+                          "continue_on_failure": false,
+                          "description": "Update the query string with the IP search parameter",
+                          "display_name": "Update Query with IP",
+                          "skip_execution": false,
+                          "variables_to_update": [
+                            {
+                              "variable_to_update": "$workflow.definition_workflow_01G4JWPBPAAUJ1O8q0zJSLLwwuypCTHHepZ.local.variable_workflow_01G4SL8PGWBZJ39rD2pdf8FH8MjxKHED2uC$",
+                              "variable_value_new": "$workflow.definition_workflow_01G4JWPBPAAUJ1O8q0zJSLLwwuypCTHHepZ.local.variable_workflow_01G4SL8PGWBZJ39rD2pdf8FH8MjxKHED2uC$&ip=$workflow.definition_workflow_01G4JWPBPAAUJ1O8q0zJSLLwwuypCTHHepZ.input.variable_workflow_01G4JXZ3GQPBA3pAbSxY2FanbgfIO2j73Qi$"
+                            }
+                          ]
+                        },
+                        "object_type": "definition_activity"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "unique_name": "definition_activity_01G5FWB1KULSP6h4kQJ8ZbXtmZWGskZ3deZ",
+                "name": "Condition Block",
+                "title": "Search Vendor Provided",
+                "type": "logic.if_else",
+                "base_type": "activity",
+                "properties": {
+                  "continue_on_failure": true,
+                  "description": "Is the vendor search parameter provided?",
+                  "display_name": "Search Vendor Provided",
+                  "skip_execution": false
+                },
+                "object_type": "definition_activity",
+                "blocks": [
+                  {
+                    "unique_name": "definition_activity_01G5FWBM2I73K5SJYgtFu6Q27i3HdueOwoJ",
+                    "name": "Condition Branch",
+                    "title": "Yes",
+                    "type": "logic.condition_block",
+                    "base_type": "activity",
+                    "properties": {
+                      "condition": {
+                        "left_operand": "$workflow.definition_workflow_01G4JWPBPAAUJ1O8q0zJSLLwwuypCTHHepZ.input.variable_workflow_01G4JY8B3O2DB0NHkGTz5izOQvrAYqmg2XZ$",
+                        "operator": "ne",
+                        "right_operand": ""
+                      },
+                      "continue_on_failure": true,
+                      "description": "Vendor search parameter provided",
+                      "display_name": "Yes",
+                      "skip_execution": false
+                    },
+                    "object_type": "definition_activity",
+                    "actions": [
+                      {
+                        "unique_name": "definition_activity_01G5FWBTK151D2VM9AbA414PgWwQ4Nd5iTK",
+                        "name": "Set Variables",
+                        "title": "Update Query with Vendor",
+                        "type": "core.set_multiple_variables",
+                        "base_type": "activity",
+                        "properties": {
+                          "continue_on_failure": false,
+                          "description": "Update the query string with the vendor search parameter",
+                          "display_name": "Update Query with Vendor",
+                          "skip_execution": false,
+                          "variables_to_update": [
+                            {
+                              "variable_to_update": "$workflow.definition_workflow_01G4JWPBPAAUJ1O8q0zJSLLwwuypCTHHepZ.local.variable_workflow_01G4SL8PGWBZJ39rD2pdf8FH8MjxKHED2uC$",
+                              "variable_value_new": "$workflow.definition_workflow_01G4JWPBPAAUJ1O8q0zJSLLwwuypCTHHepZ.local.variable_workflow_01G4SL8PGWBZJ39rD2pdf8FH8MjxKHED2uC$&vendor=$workflow.definition_workflow_01G4JWPBPAAUJ1O8q0zJSLLwwuypCTHHepZ.input.variable_workflow_01G4JY8B3O2DB0NHkGTz5izOQvrAYqmg2XZ$"
+                            }
+                          ]
+                        },
+                        "object_type": "definition_activity"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "unique_name": "definition_activity_01G5FX7SVMI2Y0TPTsCBRMjJ7JQBXbV8hP5",
+                "name": "Condition Block",
+                "title": "Search Model Provided",
+                "type": "logic.if_else",
+                "base_type": "activity",
+                "properties": {
+                  "continue_on_failure": true,
+                  "description": "Is the model search parameter provided?",
+                  "display_name": "Search Model Provided",
+                  "skip_execution": false
+                },
+                "object_type": "definition_activity",
+                "blocks": [
+                  {
+                    "unique_name": "definition_activity_01G5FX85A6MTI5STAGwZspvb1TjpTO1S88d",
+                    "name": "Condition Branch",
+                    "title": "Yes",
+                    "type": "logic.condition_block",
+                    "base_type": "activity",
+                    "properties": {
+                      "condition": {
+                        "left_operand": "$workflow.definition_workflow_01G4JWPBPAAUJ1O8q0zJSLLwwuypCTHHepZ.input.variable_workflow_01G4JYFPWF94T6CnvK5I5B9iowRzbxOI3JH$",
+                        "operator": "ne",
+                        "right_operand": ""
+                      },
+                      "continue_on_failure": true,
+                      "description": "Model search parameter provided",
+                      "display_name": "Yes",
+                      "skip_execution": false
+                    },
+                    "object_type": "definition_activity",
+                    "actions": [
+                      {
+                        "unique_name": "definition_activity_01G5FX8FE83KL65uzgpy1F3ntWhIs0AMjFB",
+                        "name": "Set Variables",
+                        "title": "Update Query with Model",
+                        "type": "core.set_multiple_variables",
+                        "base_type": "activity",
+                        "properties": {
+                          "continue_on_failure": false,
+                          "description": "Update the query string with the modelsearch parameter",
+                          "display_name": "Update Query with Model",
+                          "skip_execution": false,
+                          "variables_to_update": [
+                            {
+                              "variable_to_update": "$workflow.definition_workflow_01G4JWPBPAAUJ1O8q0zJSLLwwuypCTHHepZ.local.variable_workflow_01G4SL8PGWBZJ39rD2pdf8FH8MjxKHED2uC$",
+                              "variable_value_new": "$workflow.definition_workflow_01G4JWPBPAAUJ1O8q0zJSLLwwuypCTHHepZ.local.variable_workflow_01G4SL8PGWBZJ39rD2pdf8FH8MjxKHED2uC$&model=$workflow.definition_workflow_01G4JWPBPAAUJ1O8q0zJSLLwwuypCTHHepZ.input.variable_workflow_01G4JYFPWF94T6CnvK5I5B9iowRzbxOI3JH$"
+                            }
+                          ]
+                        },
+                        "object_type": "definition_activity"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "unique_name": "definition_activity_01G4JX2J0JVUV3sRUTL1p30XxItEJ13NyHQ",
+                "name": "HTTP Request",
+                "title": "Get Devices",
+                "type": "web-service.http_request",
+                "base_type": "activity",
+                "properties": {
+                  "accept": "application/json",
+                  "action_timeout": 180,
+                  "allow_auto_redirect": true,
+                  "content_type": "application/json",
+                  "continue_on_error_status_code": false,
+                  "continue_on_failure": false,
+                  "custom_headers": [
+                    {
+                      "name": "cache-control",
+                      "value": "no-cache"
+                    }
+                  ],
+                  "description": "Query Tufin for devices matching the search criteria",
+                  "display_name": "Get Devices",
+                  "method": "GET",
+                  "relative_url": "/securetrack/api/devices?show_os_version=true$workflow.definition_workflow_01G4JWPBPAAUJ1O8q0zJSLLwwuypCTHHepZ.local.variable_workflow_01G4SL8PGWBZJ39rD2pdf8FH8MjxKHED2uC$",
+                  "runtime_user": {
+                    "override_target_runtime_user": false,
+                    "target_default": true
+                  },
+                  "skip_execution": false,
+                  "target": {
+                    "override_workflow_target": false,
+                    "override_workflow_target_group_criteria": false,
+                    "use_workflow_target": true,
+                    "use_workflow_target_group": false
+                  }
+                },
+                "object_type": "definition_activity"
+              },
+              {
+                "unique_name": "definition_activity_01G5G2R573BHD6oQhOeRVBTYtPIGitiqDnb",
+                "name": "Read Table from JSON",
+                "title": "Read Device Details",
+                "type": "corejava.read_table_from_json",
+                "base_type": "activity",
+                "properties": {
+                  "action_timeout": 180,
+                  "continue_on_failure": false,
+                  "description": "Read device details in to table",
+                  "display_name": "Read Device Details",
+                  "input_json": "$activity.definition_activity_01G4JX2J0JVUV3sRUTL1p30XxItEJ13NyHQ.output.response_body$",
+                  "jsonpath_query": "$.devices.device[*]",
+                  "persist_output": true,
+                  "populate_columns": false,
+                  "skip_execution": false,
+                  "table_columns": [
+                    {
+                      "column_name": "id",
+                      "column_type": "string"
+                    },
+                    {
+                      "column_name": "name",
+                      "column_type": "string"
+                    },
+                    {
+                      "column_name": "model",
+                      "column_type": "string"
+                    },
+                    {
+                      "column_name": "domain_id",
+                      "column_type": "string"
+                    },
+                    {
+                      "column_name": "domain_name",
+                      "column_type": "string"
+                    },
+                    {
+                      "column_name": "offline",
+                      "column_type": "boolean"
+                    },
+                    {
+                      "column_name": "topology",
+                      "column_type": "boolean"
+                    },
+                    {
+                      "column_name": "module_uid",
+                      "column_type": "string"
+                    },
+                    {
+                      "column_name": "ip",
+                      "column_type": "string"
+                    },
+                    {
+                      "column_name": "latest_revision",
+                      "column_type": "string"
+                    },
+                    {
+                      "column_name": "virtual_type",
+                      "column_type": "string"
+                    },
+                    {
+                      "column_name": "context_name",
+                      "column_type": "string"
+                    },
+                    {
+                      "column_name": "vendor",
+                      "column_type": "string"
+                    }
+                  ]
+                },
+                "object_type": "definition_activity"
+              },
+              {
+                "unique_name": "definition_activity_01G5G5OBCA9X31nURVgTP5VnGoT25QOHJUa",
+                "name": "For Each",
+                "title": "Add Device to Output",
+                "type": "logic.for_each",
+                "base_type": "activity",
+                "properties": {
+                  "continue_on_failure": false,
+                  "description": "Add each device to the device outpot",
+                  "display_name": "Add Device to Output",
+                  "skip_execution": false,
+                  "source_array": "$activity.definition_activity_01G5G2R573BHD6oQhOeRVBTYtPIGitiqDnb.output.read_table_from_json$"
+                },
+                "object_type": "definition_activity",
+                "actions": [
+                  {
+                    "unique_name": "definition_activity_01G5G6BV1LLMT26Xq25r9kUx0cbOUU5ghlS",
+                    "name": "Add Row to Table",
+                    "title": "Add Row to Table",
+                    "type": "core.addrowtotable",
+                    "base_type": "activity",
+                    "properties": {
+                      "action_timeout": 180,
+                      "continue_on_failure": false,
+                      "description": "Add device row to device table",
+                      "display_name": "Add Row to Table",
+                      "input_table": "$workflow.definition_workflow_01G4JWPBPAAUJ1O8q0zJSLLwwuypCTHHepZ.output.variable_workflow_01G5G6WGWKZ9P30HhmDsHKDQmywxRGbldzM$",
+                      "row": [
+                        {
+                          "key": "id",
+                          "type": "string",
+                          "value": "$activity.definition_activity_01G5G5OBCA9X31nURVgTP5VnGoT25QOHJUa.input.source_array[@].id$"
+                        },
+                        {
+                          "key": "name",
+                          "type": "string",
+                          "value": "$activity.definition_activity_01G5G5OBCA9X31nURVgTP5VnGoT25QOHJUa.input.source_array[@].name$"
+                        },
+                        {
+                          "key": "vendor",
+                          "type": "string",
+                          "value": "$activity.definition_activity_01G5G5OBCA9X31nURVgTP5VnGoT25QOHJUa.input.source_array[@].vendor$"
+                        },
+                        {
+                          "key": "model",
+                          "type": "string",
+                          "value": "$activity.definition_activity_01G5G5OBCA9X31nURVgTP5VnGoT25QOHJUa.input.source_array[@].model$"
+                        },
+                        {
+                          "key": "domain_id",
+                          "type": "string",
+                          "value": "$activity.definition_activity_01G5G5OBCA9X31nURVgTP5VnGoT25QOHJUa.input.source_array[@].domain_id$"
+                        },
+                        {
+                          "key": "domain_name",
+                          "type": "string",
+                          "value": "$activity.definition_activity_01G5G5OBCA9X31nURVgTP5VnGoT25QOHJUa.input.source_array[@].domain_name$"
+                        },
+                        {
+                          "key": "offline",
+                          "type": "boolean",
+                          "value": "$activity.definition_activity_01G5G5OBCA9X31nURVgTP5VnGoT25QOHJUa.input.source_array[@].offline$"
+                        },
+                        {
+                          "key": "topology",
+                          "type": "boolean",
+                          "value": "$activity.definition_activity_01G5G5OBCA9X31nURVgTP5VnGoT25QOHJUa.input.source_array[@].topology$"
+                        },
+                        {
+                          "key": "module_uid",
+                          "type": "string",
+                          "value": "$activity.definition_activity_01G5G5OBCA9X31nURVgTP5VnGoT25QOHJUa.input.source_array[@].module_uid$"
+                        },
+                        {
+                          "key": "ip",
+                          "type": "string",
+                          "value": "$activity.definition_activity_01G5G5OBCA9X31nURVgTP5VnGoT25QOHJUa.input.source_array[@].ip$"
+                        },
+                        {
+                          "key": "latest_revision",
+                          "type": "string",
+                          "value": "$activity.definition_activity_01G5G5OBCA9X31nURVgTP5VnGoT25QOHJUa.input.source_array[@].latest_revision$"
+                        },
+                        {
+                          "key": "virtual_type",
+                          "type": "string",
+                          "value": "$activity.definition_activity_01G5G5OBCA9X31nURVgTP5VnGoT25QOHJUa.input.source_array[@].virtual_type$"
+                        },
+                        {
+                          "key": "context_name",
+                          "type": "string",
+                          "value": "$activity.definition_activity_01G5G5OBCA9X31nURVgTP5VnGoT25QOHJUa.input.source_array[@].context_name$"
+                        }
+                      ],
+                      "skip_execution": false
+                    },
+                    "object_type": "definition_activity"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "unique_name": "definition_activity_01G4JYTSNSOBL74fPNhiz5abjQbslvGvFmu",
+            "name": "Condition Branch",
+            "title": "Invalid",
+            "type": "logic.condition_block",
+            "base_type": "activity",
+            "properties": {
+              "condition": {
+                "left_operand": {
+                  "left_operand": {
+                    "left_operand": {
+                      "left_operand": "$workflow.definition_workflow_01G4JWPBPAAUJ1O8q0zJSLLwwuypCTHHepZ.input.variable_workflow_01G4JXZ3GQPBA3pAbSxY2FanbgfIO2j73Qi$",
+                      "operator": "eq",
+                      "right_operand": ""
+                    },
+                    "operator": "and",
+                    "right_operand": {
+                      "left_operand": "$workflow.definition_workflow_01G4JWPBPAAUJ1O8q0zJSLLwwuypCTHHepZ.input.variable_workflow_01G4JYFPWF94T6CnvK5I5B9iowRzbxOI3JH$",
+                      "operator": "eq",
+                      "right_operand": ""
+                    }
+                  },
+                  "operator": "and",
+                  "right_operand": {
+                    "left_operand": "$workflow.definition_workflow_01G4JWPBPAAUJ1O8q0zJSLLwwuypCTHHepZ.input.variable_workflow_01G4JXOMXWS6K3QjOGdxrcMatrwqOHcSXYf$",
+                    "operator": "eq",
+                    "right_operand": ""
+                  }
+                },
+                "operator": "and",
+                "right_operand": {
+                  "left_operand": "$workflow.definition_workflow_01G4JWPBPAAUJ1O8q0zJSLLwwuypCTHHepZ.input.variable_workflow_01G4JY8B3O2DB0NHkGTz5izOQvrAYqmg2XZ$",
+                  "operator": "eq",
+                  "right_operand": ""
+                }
+              },
+              "continue_on_failure": false,
+              "display_name": "Invalid",
+              "skip_execution": false
+            },
+            "object_type": "definition_activity",
+            "actions": [
+              {
+                "unique_name": "definition_activity_01G4JZQU11EHH3QTrk7DWxl875kHyzPBWjP",
+                "name": "Failed",
+                "title": "Completed",
+                "type": "logic.completed",
+                "base_type": "activity",
+                "properties": {
+                  "completion_type": "failed-completed",
+                  "display_name": "Failed",
+                  "result_message": "At least one of the four optional search parameters must be provided"
+                },
+                "object_type": "definition_activity"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "categories": [
+      "category_01G4JLUINA0E65x8iCa6Behj8y9V0ZE9f8O"
+    ]
+  },
+  "categories": {
+    "category_01G4JLUINA0E65x8iCa6Behj8y9V0ZE9f8O": {
+      "unique_name": "category_01G4JLUINA0E65x8iCa6Behj8y9V0ZE9f8O",
+      "name": "Tufin",
+      "title": "Tufin",
+      "type": "basic.category",
+      "base_type": "category",
+      "description": "Tufin Orchestration Suite",
+      "category_type": "custom",
+      "object_type": "category"
+    }
+  },
+  "table_types": {
+    "tabletype_01G4SWGU4FCWO5Ba1Y4jyaBd34T8j1pCQr9": {
+      "unique_name": "tabletype_01G4SWGU4FCWO5Ba1Y4jyaBd34T8j1pCQr9",
+      "data_type": "datatype.tabletype",
+      "display_name": "Tufin Devices",
+      "description": "Tufin Devices",
+      "columns": [
+        {
+          "name": "model",
+          "title": "model",
+          "type": "string"
+        },
+        {
+          "name": "name",
+          "title": "name",
+          "type": "string"
+        },
+        {
+          "name": "offline",
+          "title": "offline",
+          "type": "boolean"
+        },
+        {
+          "name": "topology",
+          "title": "topology",
+          "type": "boolean"
+        },
+        {
+          "name": "virtual_type",
+          "title": "virtual_type",
+          "type": "string"
+        },
+        {
+          "name": "domain_name",
+          "title": "domain_name",
+          "type": "string"
+        },
+        {
+          "is_required": true,
+          "name": "id",
+          "title": "id",
+          "type": "string"
+        },
+        {
+          "name": "ip",
+          "title": "ip",
+          "type": "string"
+        },
+        {
+          "name": "latest_revision",
+          "title": "latest_revision",
+          "type": "string"
+        },
+        {
+          "name": "module_uid",
+          "title": "module_uid",
+          "type": "string"
+        },
+        {
+          "name": "vendor",
+          "title": "vendor",
+          "type": "string"
+        },
+        {
+          "name": "context_name",
+          "title": "context_name",
+          "type": "string"
+        },
+        {
+          "name": "domain_id",
+          "title": "domain_id",
+          "type": "string"
+        }
+      ],
+      "base_type": "datatype",
+      "object_type": "tabletype"
+    }
+  }
+}
