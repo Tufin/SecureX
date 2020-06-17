@@ -1,5 +1,5 @@
 ## Overview
-Retrieve and analyze network access controls across Tufin-managed firewalls, SDN, and public cloud to identify vulnerable access paths of an attack
+SecureX integration to retrieve and analyze network access controls across Tufin-managed firewalls, SDN, and public cloud to identify vulnerable access paths of an attack
 
 ## Account Key Configuration
 A single Account Key may be utilized when multiple TOS components (SecureTrack, SecureChange, and SecureApp) share the same credentials.  If the credentials differ between SecureTrack, SecureChange, and SecureApp deployments, different Account Keys should be configured for each.
