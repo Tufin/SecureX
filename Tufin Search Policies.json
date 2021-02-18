@@ -528,22 +528,6 @@
       }
     }
   },
-  "runtime_users": {
-    "definition_runtime_user_01G4JJHA8TCD34cpHM62pL4waxpkyMnjSJd": {
-      "unique_name": "definition_runtime_user_01G4JJHA8TCD34cpHM62pL4waxpkyMnjSJd",
-      "name": "TOS User 'r'",
-      "title": "TOS User 'r'",
-      "type": "runtime_user.web-service_basic_credentials",
-      "base_type": "runtime_user",
-      "object_type": "definition_runtime_user",
-      "properties": {
-        "auth_option": "*****",
-        "basic_password": "*****",
-        "basic_username": "*****",
-        "display_name": "TOS User 'r'"
-      }
-    }
-  },
   "table_types": {
     "tabletype_01G8ZYSIAWY1H6CX7fRimIrGjrnyIyWN9zN": {
       "unique_name": "tabletype_01G8ZYSIAWY1H6CX7fRimIrGjrnyIyWN9zN",
