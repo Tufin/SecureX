@@ -135,7 +135,7 @@
           "continue_on_failure": false,
           "description": "Iterate through the results to find the device IDs of the devices with matching rules",
           "display_name": "Get Device IDs with Match",
-          "script": "matches = $activity.definition_activity_01G4JL7MQ3FCZ6EHUQUoPvcdJEh7m83TFCo.output.response_body$\nsearch_devices = {}\ndev_list = []\nfor match in matches['device_list']['device']:\n    if int(match['rule_count']) > 0:\n        dev_list.append({\"id\": match['device_id']})\nsearch_devices[\"devices\"] = dev_list",
+          "script": "import json\nmatches = $activity.definition_activity_01G4JL7MQ3FCZ6EHUQUoPvcdJEh7m83TFCo.output.response_body$\nsearch_devices = {}\ndev_list = []\nfor match in matches['device_list']['device']:\n    if int(match['rule_count']) > 0:\n        dev_list.append({\"id\": match['device_id']})\nsearch_devices[\"devices\"] = dev_list\nsearch_devices = json.dumps(search_devices)",
           "script_queries": [
             {
               "script_query": "search_devices",
@@ -315,7 +315,7 @@
               "continue_on_failure": false,
               "description": "Parse policy information from results",
               "display_name": "Parse Policies",
-              "script": "false = False\ntrue = True\nrules =$activity.definition_activity_01G8YQVNERIUH77ZTQDba2SqTFDRACPp2xp.output.response_body$\nrule_total = 0\nrule_return = []\nfor rule in rules['rules']['rule']:\n    rule_total = rule_total + 1\n    rule_return.append({\n        'device': '$workflow.definition_workflow_01G4JL4BQ019J4CDBJFJCB6iPXRhcpJDwnA.local.variable_workflow_01G8ZCCUJILQF5pwlsITr7XKnGyzvZDUFFP$',\n        'source': [d['display_name'] for d in rule['src_network']],\n        'source_service': [d['display_name'] for d in rule['src_service']],\n        'destination': [d['display_name'] for d in rule['dst_network']],\n        'destination_service': [d['display_name'] for d in rule['dst_service']],\n        'action': rule['action']\n    })",
+              "script": "import json\nfalse = False\ntrue = True\nrules =$activity.definition_activity_01G8YQVNERIUH77ZTQDba2SqTFDRACPp2xp.output.response_body$\nrule_total = 0\nrule_return = []\nfor rule in rules['rules']['rule']:\n    rule_total = rule_total + 1\n    rule_return.append({\n        'device': '$workflow.definition_workflow_01G4JL4BQ019J4CDBJFJCB6iPXRhcpJDwnA.local.variable_workflow_01G8ZCCUJILQF5pwlsITr7XKnGyzvZDUFFP$',\n        'source': [d['display_name'] for d in rule['src_network']],\n        'source_service': [d['display_name'] for d in rule['src_service']],\n        'destination': [d['display_name'] for d in rule['dst_network']],\n        'destination_service': [d['display_name'] for d in rule['dst_service']],\n        'action': rule['action']\nrule_return = json.dumps(rule_return)})",
               "script_arguments": [
                 "$activity.definition_activity_01G8YQVNERIUH77ZTQDba2SqTFDRACPp2xp.output.response_body$"
               ],
