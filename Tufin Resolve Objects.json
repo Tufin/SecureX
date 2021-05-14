@@ -54,7 +54,7 @@
         "is_atomic": true
       },
       "delete_workflow_instance": false,
-      "description": "Resolve IP address to Network Object.\n\nTarget: An HTTP endpoint for your Tufin Orchestration Suite (TOS) external addres\n\nAccount Key: HTTP basic with Tufin credentials\n\nSteps:\n[] Make request to get Network Objects\n[]> If it was, extract Network Objects\n[]> If it wasn't, return an error\n[]> If extracting succeed, put data into output variables\n[]> If it wasn't, return an error\n\nMore information about this API: https://forum.tufin.com/support/kc/R19-2/securetrack/apidoc/#!/Network_Objects/findNetworkObjects",
+      "description": "Resolve IP address to Network Object.\n\nTarget: An HTTP endpoint for your Tufin Orchestration Suite (TOS) external address\n\nAccount Key: HTTP basic with Tufin credentials\n\nSteps:\n[] Make request to get Network Objects\n[] Check if request succeeded\n[]> If it did, extract Network Objects\n[]> If it didn't, return an error\n[]> If extracting succeeded, put data into output variables\n[]> If it didn't, return an error\n\nMore information about this API: https://forum.tufin.com/support/kc/R19-2/securetrack/apidoc/#!/Network_Objects/findNetworkObjects",
       "display_name": "Tufin - Resolve Objects",
       "runtime_user": {
         "override_target_runtime_user": false,
@@ -304,10 +304,10 @@
                 "type": "logic.completed",
                 "base_type": "activity",
                 "properties": {
-                  "completion_type": "succeeded",
+                  "completion_type": "failed-completed",
                   "continue_on_failure": false,
                   "display_name": "Error message",
-                  "result_message": "{\"message\": \"Tufin response data structure has changed. Atomic action need to be fixed.\"}",
+                  "result_message": "{\"message\": \"Tufin response data structure has changed. Atomic action needs to be fixed.\"}",
                   "skip_execution": false
                 },
                 "object_type": "definition_activity"
@@ -319,12 +319,12 @@
       {
         "unique_name": "definition_activity_01NLFEM66TK4S0aP9RInKmt8OU60OdEiziv",
         "name": "Set Variables",
-        "title": "Set networ object JSON",
+        "title": "Set network object JSON",
         "type": "core.set_multiple_variables",
         "base_type": "activity",
         "properties": {
           "continue_on_failure": false,
-          "display_name": "Set networ object JSON",
+          "display_name": "Set network object JSON",
           "skip_execution": false,
           "variables_to_update": [
             {
@@ -373,7 +373,7 @@
                 "type": "logic.completed",
                 "base_type": "activity",
                 "properties": {
-                  "completion_type": "succeeded",
+                  "completion_type": "failed-completed",
                   "continue_on_failure": false,
                   "display_name": "No objects message",
                   "result_message": "{\"message\": \"There are no network objects\"}",
@@ -591,6 +591,21 @@
       "description": "Tufin Network Objects",
       "columns": [
         {
+          "name": "ip",
+          "title": "ip",
+          "type": "string"
+        },
+        {
+          "name": "name",
+          "title": "name",
+          "type": "string"
+        },
+        {
+          "name": "overrides",
+          "title": "overrides",
+          "type": "string"
+        },
+        {
           "is_required": true,
           "name": "id",
           "title": "id",
@@ -602,33 +617,8 @@
           "type": "boolean"
         },
         {
-          "name": "name",
-          "title": "name",
-          "type": "string"
-        },
-        {
-          "name": "type",
-          "title": "type",
-          "type": "string"
-        },
-        {
-          "name": "device_id",
-          "title": "device_id",
-          "type": "integer"
-        },
-        {
-          "name": "netmask",
-          "title": "netmask",
-          "type": "string"
-        },
-        {
-          "name": "ip",
-          "title": "ip",
-          "type": "string"
-        },
-        {
-          "name": "comment",
-          "title": "comment",
+          "name": "type_on_device",
+          "title": "type_on_device",
           "type": "string"
         },
         {
@@ -637,8 +627,13 @@
           "type": "string"
         },
         {
-          "name": "type_on_device",
-          "title": "type_on_device",
+          "name": "type",
+          "title": "type",
+          "type": "string"
+        },
+        {
+          "name": "ip_type",
+          "title": "ip_type",
           "type": "string"
         },
         {
@@ -652,13 +647,18 @@
           "type": "string"
         },
         {
-          "name": "overrides",
-          "title": "overrides",
+          "name": "comment",
+          "title": "comment",
           "type": "string"
         },
         {
-          "name": "ip_type",
-          "title": "ip_type",
+          "name": "device_id",
+          "title": "device_id",
+          "type": "integer"
+        },
+        {
+          "name": "netmask",
+          "title": "netmask",
           "type": "string"
         }
       ],
