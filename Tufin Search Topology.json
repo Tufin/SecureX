@@ -9,48 +9,6 @@
       {
         "schema_id": "datatype.string",
         "properties": {
-          "value": "[]",
-          "scope": "output",
-          "name": "Topology JSON",
-          "type": "datatype.string",
-          "description": "Output in JSON format",
-          "is_required": false,
-          "is_invisible": false
-        },
-        "unique_name": "variable_workflow_01NOT8NA84JCT4tjn2EHBrv1QeTr4h6zPgX",
-        "object_type": "variable_workflow"
-      },
-      {
-        "schema_id": "datatype.string",
-        "properties": {
-          "value": "",
-          "scope": "input",
-          "name": "Source IP",
-          "type": "datatype.string",
-          "description": "Source IP address",
-          "is_required": true,
-          "is_invisible": false
-        },
-        "unique_name": "variable_workflow_01G8TNUDO0R1V0tLx9iA9yKHRqlf9PzmtKt",
-        "object_type": "variable_workflow"
-      },
-      {
-        "schema_id": "datatype.boolean",
-        "properties": {
-          "value": false,
-          "scope": "output",
-          "name": "Tufin Topology Is Permitted",
-          "type": "datatype.boolean",
-          "description": "Tufin Topology Search Results - Is traffic permitted?",
-          "is_required": false,
-          "is_invisible": false
-        },
-        "unique_name": "variable_workflow_01G8TZTM2YELA5Kaz7gcTIiS3X9AQfSqohq",
-        "object_type": "variable_workflow"
-      },
-      {
-        "schema_id": "datatype.string",
-        "properties": {
           "value": "",
           "scope": "input",
           "name": "Destination IP",
@@ -60,6 +18,20 @@
           "is_invisible": false
         },
         "unique_name": "variable_workflow_01G8TO71L18GT0V6hrPwuV0JEpUht4FZRwl",
+        "object_type": "variable_workflow"
+      },
+      {
+        "schema_id": "datatype.integer",
+        "properties": {
+          "value": 1,
+          "scope": "local",
+          "name": "Hop",
+          "type": "datatype.integer",
+          "description": "Hop number",
+          "is_required": false,
+          "is_invisible": false
+        },
+        "unique_name": "variable_workflow_01G8U66CER7QL3CxKcWgauGtMfmKXEp8Qp1",
         "object_type": "variable_workflow"
       },
       {
@@ -90,17 +62,45 @@
         "object_type": "variable_workflow"
       },
       {
-        "schema_id": "datatype.integer",
+        "schema_id": "datatype.string",
         "properties": {
-          "value": 1,
-          "scope": "local",
-          "name": "Hop",
-          "type": "datatype.integer",
-          "description": "Hop number",
+          "value": "[]",
+          "scope": "output",
+          "name": "Topology JSON",
+          "type": "datatype.string",
+          "description": "Output in JSON format",
           "is_required": false,
           "is_invisible": false
         },
-        "unique_name": "variable_workflow_01G8U66CER7QL3CxKcWgauGtMfmKXEp8Qp1",
+        "unique_name": "variable_workflow_01NOT8NA84JCT4tjn2EHBrv1QeTr4h6zPgX",
+        "object_type": "variable_workflow"
+      },
+      {
+        "schema_id": "datatype.boolean",
+        "properties": {
+          "value": false,
+          "scope": "output",
+          "name": "Tufin Topology Is Permitted",
+          "type": "datatype.boolean",
+          "description": "Tufin Topology Search Results - Is traffic permitted?",
+          "is_required": false,
+          "is_invisible": false
+        },
+        "unique_name": "variable_workflow_01G8TZTM2YELA5Kaz7gcTIiS3X9AQfSqohq",
+        "object_type": "variable_workflow"
+      },
+      {
+        "schema_id": "datatype.string",
+        "properties": {
+          "value": "",
+          "scope": "input",
+          "name": "Source IP",
+          "type": "datatype.string",
+          "description": "Source IP address",
+          "is_required": true,
+          "is_invisible": false
+        },
+        "unique_name": "variable_workflow_01G8TNUDO0R1V0tLx9iA9yKHRqlf9PzmtKt",
         "object_type": "variable_workflow"
       }
     ],
@@ -110,7 +110,7 @@
         "is_atomic": true
       },
       "delete_workflow_instance": false,
-      "description": "Search the Tufin Topology Map.\n\nTarget: An HTTP endpoint for your Tufin Orchestration Suite (TOS) external addres\n\nAccount Key: HTTP basic with Tufin credentials\n\nSteps:\n[] Query SecureTrack for topology information\n[]> If it was, determine if traffic is allowed, extract topology data\n[]> If it wasn't, return an error\n[]> If extracting succeed, put data into output variables\n[]> If it wasn't, return an error\n\nMore information about this API: https://forum.tufin.com/support/kc/R19-2/securetrack/apidoc/#!/Network_Topology/getPathCalc\n",
+      "description": "Search the Tufin Topology Map.\n\nTarget: An HTTP endpoint for your Tufin Orchestration Suite (TOS) external addres\n\nAccount Key: HTTP basic with Tufin credentials\n\nSteps:\n[] Query SecureTrack for topology information\n[] Check if request succeeded\n[]> If it did, determine if traffic is allowed, extract topology data\n[]> If it didn't, return an error\n[]> If extracting succeeded, put data into output variables\n[]> If it didn't, return an error\n\nMore information about this API: https://forum.tufin.com/support/kc/R19-2/securetrack/apidoc/#!/Network_Topology/getPathCalc",
       "display_name": "Tufin - Search Topology",
       "runtime_user": {
         "override_target_runtime_user": false,
@@ -164,12 +164,12 @@
       {
         "unique_name": "definition_activity_01NOSHRVKZCB81dk0gsvC1sz5rdaxd7LpBu",
         "name": "Condition Block",
-        "title": "Is response OK",
+        "title": "Is response OK?",
         "type": "logic.if_else",
         "base_type": "activity",
         "properties": {
           "continue_on_failure": false,
-          "display_name": "Is response OK",
+          "display_name": "Is response OK?",
           "skip_execution": false
         },
         "object_type": "definition_activity",
@@ -307,14 +307,14 @@
           "action_timeout": 180,
           "continue_on_failure": true,
           "display_name": "Create Topology JSON",
-          "script": "import sys, json\n\nresponse = json.loads(sys.argv[1])\ndevice_info = response['path_calc_results']['device_info']\n\ntopologiy = []\nif device_info:\n    for hop, item in enumerate(device_info):\n        topologiy.append(\n            {\n                'hop': hop + 1,\n                'id': item['id'],\n                'name': item['name'],\n                'type': item['type'],\n                'vendor': item['vendor']\n            }\n        )\n\ntopologiy = json.dumps(topologiy)",
+          "script": "import sys, json\n\nresponse = json.loads(sys.argv[1])\ndevice_info = response['path_calc_results']['device_info']\n\ntopology = []\nif device_info:\n    for hop, item in enumerate(device_info):\n        topology.append(\n            {\n                'hop': hop + 1,\n                'id': item['id'],\n                'name': item['name'],\n                'type': item['type'],\n                'vendor': item['vendor']\n            }\n        )\n\ntopology = json.dumps(topology)",
           "script_arguments": [
             "$activity.definition_activity_01G8TPJYWDANY4EKmlNSaT4VvayxfUl5LGN.output.response_body$"
           ],
           "script_queries": [
             {
-              "script_query": "topologiy",
-              "script_query_name": "Topologiy",
+              "script_query": "topology",
+              "script_query_name": "Topology",
               "script_query_type": "string"
             }
           ],
@@ -325,12 +325,12 @@
       {
         "unique_name": "definition_activity_01NUONLZB2NEQ2HVmkFO5MZjuthBkIED7KE",
         "name": "Condition Block",
-        "title": "Is Topology extracting succeed?",
+        "title": "Topology extracting succeeded?",
         "type": "logic.if_else",
         "base_type": "activity",
         "properties": {
           "continue_on_failure": false,
-          "display_name": "Is Topology extracting succeed?",
+          "display_name": "Topology extracting succeeded?",
           "skip_execution": false
         },
         "object_type": "definition_activity",
@@ -363,7 +363,7 @@
                   "completion_type": "failed-completed",
                   "continue_on_failure": false,
                   "display_name": "Error message",
-                  "result_message": "{\"message\": \"Tufin response data structure has changed. Atomic action need to be fixed.\"}",
+                  "result_message": "{\"message\": \"Tufin response data structure has changed. Atomic action needs to be fixed.\"}",
                   "skip_execution": false
                 },
                 "object_type": "definition_activity"
@@ -375,12 +375,12 @@
       {
         "unique_name": "definition_activity_01NPMDX8GM7683eFQuQlneI2687hW246lvM",
         "name": "Condition Block",
-        "title": "Is device info",
+        "title": "Is there device info?",
         "type": "logic.if_else",
         "base_type": "activity",
         "properties": {
           "continue_on_failure": false,
-          "display_name": "Is device info",
+          "display_name": "Is there device info?",
           "skip_execution": false
         },
         "object_type": "definition_activity",
@@ -388,17 +388,17 @@
           {
             "unique_name": "definition_activity_01NPMDY0F9L5N0D250h4uMmfSsMqpIRYXLf",
             "name": "Condition Branch",
-            "title": "Condition Branch",
+            "title": "No",
             "type": "logic.condition_block",
             "base_type": "activity",
             "properties": {
               "condition": {
-                "left_operand": "$activity.definition_activity_01NOSS5BOANX12xkliLZllaXhvah1iHWpVP.output.script_queries.Topologiy$",
+                "left_operand": "$activity.definition_activity_01NOSS5BOANX12xkliLZllaXhvah1iHWpVP.output.script_queries.Topology$",
                 "operator": "eq",
                 "right_operand": "[]"
               },
               "continue_on_failure": false,
-              "display_name": "Condition Branch",
+              "display_name": "No",
               "skip_execution": false
             },
             "object_type": "definition_activity",
@@ -410,7 +410,7 @@
                 "type": "logic.completed",
                 "base_type": "activity",
                 "properties": {
-                  "completion_type": "succeeded",
+                  "completion_type": "failed-completed",
                   "continue_on_failure": false,
                   "display_name": "Error message",
                   "result_message": "{\"message\": \"There are no devices\"}",
@@ -463,7 +463,7 @@
             },
             {
               "variable_to_update": "$workflow.definition_workflow_01G8TN3JTMR5E3t9tz73Il2cQjx9vTgVabB.output.variable_workflow_01NOT8NA84JCT4tjn2EHBrv1QeTr4h6zPgX$",
-              "variable_value_new": "$activity.definition_activity_01NOSS5BOANX12xkliLZllaXhvah1iHWpVP.output.script_queries.Topologiy$"
+              "variable_value_new": "$activity.definition_activity_01NOSS5BOANX12xkliLZllaXhvah1iHWpVP.output.script_queries.Topology$"
             }
           ]
         },
@@ -638,12 +638,6 @@
       "columns": [
         {
           "is_required": true,
-          "name": "hop",
-          "title": "hop",
-          "type": "integer"
-        },
-        {
-          "is_required": true,
           "name": "id",
           "title": "id",
           "type": "integer"
@@ -662,6 +656,12 @@
           "name": "vendor",
           "title": "vendor",
           "type": "string"
+        },
+        {
+          "is_required": true,
+          "name": "hop",
+          "title": "hop",
+          "type": "integer"
         }
       ],
       "base_type": "datatype",
