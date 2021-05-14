@@ -7,31 +7,17 @@
     "base_type": "workflow",
     "variables": [
       {
-        "schema_id": "datatype.integer",
-        "properties": {
-          "value": 25,
-          "scope": "input",
-          "name": "Max Results Per Device",
-          "type": "datatype.integer",
-          "description": "Maximum number of results to return per device",
-          "is_required": false,
-          "is_invisible": false
-        },
-        "unique_name": "variable_workflow_01G8YRY3A07VQ15wwIoWFqMqlz7O6AQTN8F",
-        "object_type": "variable_workflow"
-      },
-      {
         "schema_id": "datatype.string",
         "properties": {
           "value": "",
-          "scope": "input",
-          "name": "Search Params",
+          "scope": "local",
+          "name": "Current Device Name",
           "type": "datatype.string",
-          "description": "The text format for a field is <fieldname>:<text> for example source:192.168.1.1 or bareword for free text search. See the search info documentation in SecureTrack Policy Browser page for more information.",
-          "is_required": true,
+          "description": "Variable for current device name",
+          "is_required": false,
           "is_invisible": false
         },
-        "unique_name": "variable_workflow_01G5GFGVRMEHQ05WlmaSmP4LmE4rZefEO1y",
+        "unique_name": "variable_workflow_01G8ZCCUJILQF5pwlsITr7XKnGyzvZDUFFP",
         "object_type": "variable_workflow"
       },
       {
@@ -46,6 +32,20 @@
           "is_invisible": false
         },
         "unique_name": "variable_workflow_01NM9BCY5HB7E7YBKUIlvg6dwBYpjd0P7lX",
+        "object_type": "variable_workflow"
+      },
+      {
+        "schema_id": "datatype.integer",
+        "properties": {
+          "value": 25,
+          "scope": "input",
+          "name": "Max Results Per Device",
+          "type": "datatype.integer",
+          "description": "Maximum number of results to return per device",
+          "is_required": false,
+          "is_invisible": false
+        },
+        "unique_name": "variable_workflow_01G8YRY3A07VQ15wwIoWFqMqlz7O6AQTN8F",
         "object_type": "variable_workflow"
       },
       {
@@ -66,14 +66,27 @@
         "schema_id": "datatype.string",
         "properties": {
           "value": "",
-          "scope": "local",
-          "name": "Current Device Name",
+          "scope": "input",
+          "name": "Search Params",
           "type": "datatype.string",
-          "description": "Variable for current device name",
+          "description": "The text format for a field is <fieldname>:<text> for example source:192.168.1.1 or bareword for free text search. See the search info documentation in SecureTrack Policy Browser page for more information.",
+          "is_required": true,
+          "is_invisible": false
+        },
+        "unique_name": "variable_workflow_01G5GFGVRMEHQ05WlmaSmP4LmE4rZefEO1y",
+        "object_type": "variable_workflow"
+      },
+      {
+        "schema_id": "tabletype_01G8ZYSIAWY1H6CX7fRimIrGjrnyIyWN9zN",
+        "properties": {
+          "scope": "output",
+          "name": "Tufin Policies",
+          "type": "datatype.table",
+          "description": "Tufin Policies",
           "is_required": false,
           "is_invisible": false
         },
-        "unique_name": "variable_workflow_01G8ZCCUJILQF5pwlsITr7XKnGyzvZDUFFP",
+        "unique_name": "variable_workflow_01G8ZZXUZJL6I1GXQtrfqx1Y1L8jSmSukUn",
         "object_type": "variable_workflow"
       },
       {
@@ -88,19 +101,6 @@
           "is_invisible": false
         },
         "unique_name": "variable_workflow_01G5GGQA6WQN95U29vJK5iOcXbqlgpWXeau",
-        "object_type": "variable_workflow"
-      },
-      {
-        "schema_id": "tabletype_01G8ZYSIAWY1H6CX7fRimIrGjrnyIyWN9zN",
-        "properties": {
-          "scope": "output",
-          "name": "Tufin Policies",
-          "type": "datatype.table",
-          "description": "Tufin Policies",
-          "is_required": false,
-          "is_invisible": false
-        },
-        "unique_name": "variable_workflow_01G8ZZXUZJL6I1GXQtrfqx1Y1L8jSmSukUn",
         "object_type": "variable_workflow"
       }
     ],
@@ -358,7 +358,7 @@
                 "type": "logic.completed",
                 "base_type": "activity",
                 "properties": {
-                  "completion_type": "succeeded",
+                  "completion_type": "failed-completed",
                   "continue_on_failure": false,
                   "display_name": "Error message",
                   "result_message": "{\"message\": \"There are no devices with matching rules.\"}",
@@ -679,7 +679,7 @@
                     "type": "logic.completed",
                     "base_type": "activity",
                     "properties": {
-                      "completion_type": "succeeded",
+                      "completion_type": "failed-completed",
                       "continue_on_failure": false,
                       "display_name": "Error message",
                       "result_message": "{\"message\": \"Tufin response data structure has changed. Atomic action needs to be fixed.\"}",
@@ -1202,21 +1202,6 @@
       "description": "Tufin Policies",
       "columns": [
         {
-          "name": "action",
-          "title": "action",
-          "type": "string"
-        },
-        {
-          "name": "destination",
-          "title": "destination",
-          "type": "string"
-        },
-        {
-          "name": "destination_service",
-          "title": "destination_service",
-          "type": "string"
-        },
-        {
           "name": "device",
           "title": "device",
           "type": "string"
@@ -1229,6 +1214,21 @@
         {
           "name": "source_service",
           "title": "source_service",
+          "type": "string"
+        },
+        {
+          "name": "action",
+          "title": "action",
+          "type": "string"
+        },
+        {
+          "name": "destination",
+          "title": "destination",
+          "type": "string"
+        },
+        {
+          "name": "destination_service",
+          "title": "destination_service",
           "type": "string"
         }
       ],
