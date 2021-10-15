@@ -1,7 +1,8 @@
 ## Overview
-SecureX integration to retrieve and analyze network access controls across Tufin-managed firewalls, SDN, and public cloud to identify vulnerable access paths of an attack
+Tufin's SecureX integration includes Atomic Actions covering SecureTrack, SecureChange, SecureApp, and SecureCloud.  Each Atomic Action is autonomous, meaning you may install and use the Atomic Actions relevant to your Tufin products and disregard any Atomic Actions which are not applicable.
 
 ## Account Key Configuration
+##### SecureTrack/SecureChange/SecureApp #####
 A single Account Key may be utilized when multiple TOS components (SecureTrack, SecureChange, and SecureApp) share the same credentials.  If the credentials differ between SecureTrack, SecureChange, and SecureApp deployments, different Account Keys should be configured for each.
 
 **Important Account Key Parameters:**
@@ -14,7 +15,11 @@ A single Account Key may be utilized when multiple TOS components (SecureTrack, 
 | Authentication Option | Basic |
 
 
+##### SecureCloud #####
+SecureCloud utilizes an API access key for authentication.  No SecureX Account Key needs to be configured for SecureCloud.  Instead, each SecureCloud Atomic Action contains a variable named "API Access Key" which should be used to store the API access key for your account.  For information on creating an API access key in SecureCloud, please see the following Knowledge Center document: https://forum.tufin.com/support/kc/securecloud/Content/SecureCloud/APIAccessKeys.htm.
+
 ## Target Configuration
+##### SecureTrack/SecureChange/SecureApp #####
 A single Target may be utilized when multiple TOS components (SecureTrack, SecureChange, and SecureApp) share the same hostname/IP and credentials.  If the hostname/IP and/or credentials differ between SecureTrack, SecureChange, and SecureApp deployments, different Targets should be configured for each.
 
 **Important Target Parameters:**
@@ -27,22 +32,82 @@ A single Target may be utilized when multiple TOS components (SecureTrack, Secur
 | Path | <blank> |
 | Disable Server Certificate Validation | Check if required |
 
+##### SecureCloud #####
+
+SecureCloud uses an HTTP Endpoint target to identify your SecureCloud instance.  Please note that an Account Key is not used with this target; instead, the API Access Key is configured in the Atomic Action.  Details are provided in the Account Key Configuration section above.
+
+**Important Target Parameters:**
+
+| **Parameter** | **Value** | 
+| --- | --- | 
+| Target Type | HTTP Endpoint |
+| No Account Keys | True |
+| Protocol | HTTPS |
+| Host/IPAddress | Your SecureCloud URL (Example: example.securecloud.tufin.io |
+| Port | <blank> |
+| Path | <blank> |
+
 ## Atomic Actions
 
 **SecureTrack**
+ 
 1. Tufin Resolve Objects
+ 
 2. Tufin Search Devices
+ 
 3. Tufin Search Policies
+ 
 4. Tufin Search Topology
+ 
 
 **SecureChange**
+ 
 5. Tufin Get Change Info
+ 
 6. Tufin Submit FW Change Request
+ 
 7. Tufin Submit Server Decom Request
 
 **SecureApp**
+ 
 8. Tufin Search Applications
+ 
 9. Tufin Search Application Connections
+
+**SecureCloud**
+ 
+10. Tufin SecureCloud - Add Public Cloud Policy
+ 
+11. Tufin SecureCloud - Create Cluster
+ 
+12. Tufin SecureCloud - Create Cluster Policies from Connections
+ 
+13. Tufin SecureCloud - Delete Cluster
+ 
+14. Tufin SecureCloud - Delete Discovered Connections
+ 
+15. Tufin SecureCloud - Get Cluster Install Command
+ 
+16. Tufin SecureCloud - Get Cluster Policies
+ 
+17. Tufin SecureCloud - List Accounts
+ 
+18. Tufin SecureCloud - List Applications
+ 
+19. Tufin SecureCloud - List Assets
+ 
+20. Tufin SecureCloud - List K8S Clusters
+ 
+21. Tufin SecureCloud - List K8S Services for Cluster
+ 
+22. Tufin SecureCloud - List K8S Workloads for Cluster
+ 
+23. Tufin SecureCloud - List Public Cloud Policies
+ 
+24. Tufin SecureCloud - Set Cluster to Enforce Mode
+ 
+25. Tufin SecureCloud - Set Cluster to Learn Mode
+
 
 ### 1. Tufin Resolve Objects
 
@@ -282,6 +347,240 @@ Retrieve the connections for a SecureApp application
 | services | String | List of connection services | 
 | source | String | List of connection sources | 
 | status | String | Connection status | 
+
+### 10. Tufin SecureCloud - Add Public Cloud Policy
+
+Add a rule to the SecureCloud public cloud policy
+
+##### Input
+
+| **Argument Name** | **Description** | **Required** |
+| --- | --- | --- |
+| New Policy | See https://***youraccount***.securecloud.tufin.io/api-documentation/index.html#/Policy/put_api_v1_iris_conf_global_policy for policy formatting requirements | Yes | 
+
+##### Output
+
+No output
+
+### 11. Tufin SecureCloud - Create Cluster
+
+Create a new cluster in SecureCloud
+
+##### Input
+
+| **Argument Name** | **Description** | **Required** |
+| --- | --- | --- |
+| Cluster Name | Name of the cluster to be created | Yes | 
+
+##### Output
+
+No output
+
+### 12. Tufin SecureCloud - Create Cluster Policies from Connections
+
+Create or update a cluster policy based on the discovered connections
+
+##### Input
+
+| **Argument Name** | **Description** | **Required** |
+| --- | --- | --- |
+| Cluster Name | Name of the cluster | Yes | 
+| Namespace | Name of the Namespace | No | 
+
+##### Output
+
+No output
+
+### 13. Tufin SecureCloud - Delete Cluster
+
+Delete a cluster from SecureCloud
+
+##### Input
+
+| **Argument Name** | **Description** | **Required** |
+| --- | --- | --- |
+| Cluster Name | Name of the cluster to be deleted | Yes | 
+
+##### Output
+
+No output
+
+### 14. Tufin SecureCloud - Delete Discovered Connections
+
+Delete all newly discovered connections for a cluster
+
+##### Input
+
+| **Argument Name** | **Description** | **Required** |
+| --- | --- | --- |
+| Cluster Name | Name of the cluster to delete connections from | Yes | 
+
+##### Output
+
+No output
+
+### 15. Tufin SecureCloud - Get Cluster Install Command
+
+Create a new cluster in SecureCloud
+
+##### Input
+
+| **Argument Name** | **Description** | **Required** |
+| --- | --- | --- |
+| Cluster Name | Name of the cluster | Yes | 
+
+##### Output
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| Install Command | String | Bash command to be executed on the cluster to add the cluster to SecureCloud |
+
+### 16. Tufin SecureCloud - Get Cluster Policies
+
+Get the Kubernetes policy defined in SecureCloud as a YAML file
+
+##### Input
+
+| **Argument Name** | **Description** | **Required** |
+| --- | --- | --- |
+| Cluster Name | Name of the cluster | Yes | 
+| Namespace | Name of the namespace | Yes | 
+
+##### Output
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| Policy YAML | String | Kubernetes policy in YAML |
+
+### 17. Tufin SecureCloud - List Accounts
+
+List all public cloud accounts being managed by SecureCloud
+
+##### Input
+
+No input
+
+##### Output
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| Account Objects JSON | String | See https://***youraccount***.securecloud.tufin.io/api-documentation/index.html#/Accounts/get_api_v1_iris_conf_accounts |
+
+### 18. Tufin SecureCloud - List Applications
+
+List all public cloud applications discovered by SecureCloud
+
+##### Input
+
+No input
+
+##### Output
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| Application Objects JSON | String | See https://***youraccount***.securecloud.tufin.io/api-documentation/index.html#/Applications/get_api_v1_iris_model_cross_account_applications |
+
+### 19. Tufin SecureCloud - List Assets
+
+List all public cloud assets
+
+##### Input
+
+No input
+
+##### Output
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| Asset Objects JSON | String | See https://***youraccount***.securecloud.tufin.io/api-documentation/index.html#/Assets/get_api_v1_iris_model_cross_account_assets |
+
+### 20. Tufin SecureCloud - List K8S Clusters
+
+List all Kubernetes clusters managed in SecureCloud
+
+##### Input
+
+No input
+
+##### Output
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| Cluster Objects JSON | String | See https://***youraccount***.securecloud.tufin.io/api-documentation/index.html#/Cluster%20management/get_api_v1_orca_conf_clusters |
+
+### 21. Tufin SecureCloud - List K8S Services for Cluster
+
+List all the Kubernetes services for a cluster managed in SecureCloud
+
+##### Input
+
+| **Argument Name** | **Description** | **Required** |
+| --- | --- | --- |
+| Cluster Name | Name of the cluster | Yes | 
+
+##### Output
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| Service Objects JSON | String | See https://***youraccount***.securecloud.tufin.io/api-documentation/index.html#/Kubernetes%20cluster%20resources/get_api_v1_orca_model_clusters__name__services |
+
+### 22. Tufin SecureCloud - List K8S Workloads for Cluster
+
+List all the Kubernetes workloads for a cluster managed in SecureCloud
+
+##### Input
+
+| **Argument Name** | **Description** | **Required** |
+| --- | --- | --- |
+| Cluster Name | Name of the cluster | Yes | 
+
+##### Output
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| Workloads Objects JSON | String | See https://***youraccount***.securecloud.tufin.io/api-documentation/index.html#/Kubernetes%20cluster%20resources/get_api_v1_orca_model_clusters__name__workloads |
+
+### 23. Tufin SecureCloud - List Public Cloud Policies
+
+Show the public cloud policy defined in SecureCloud
+
+##### Input
+
+No input
+
+##### Output
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| Policy Objects JSON | String | See https://***youraccount***.securecloud.tufin.io/api-documentation/index.html#/Policy/get_api_v1_iris_conf_global_policy |
+
+### 24. Tufin SecureCloud - Set Cluster to Enforce Mode
+
+Turn on enforce mode for a cluster to enforce the defined Kubernetes policy
+
+##### Input
+
+| **Argument Name** | **Description** | **Required** |
+| --- | --- | --- |
+| Cluster Name | Name of the cluster | Yes | 
+
+##### Output
+
+No output
+
+### 25. Tufin SecureCloud - Set Cluster to Learn Mode
+
+Turn off enforce mode and allow all Kubernetes traffic
+
+##### Input
+
+| **Argument Name** | **Description** | **Required** |
+| --- | --- | --- |
+| Cluster Name | Name of the cluster | Yes | 
+
+##### Output
+
+No output
 
 ## Troubleshooting
 
