@@ -1,0 +1,285 @@
+{
+  "workflow": {
+    "unique_name": "definition_workflow_01Q71D71CB6YS18iDGMeS4AfeyoaaBgwCjP",
+    "name": "Tufin SecureCloud - Delete Discovered Connections",
+    "title": "Tufin SecureCloud - Delete Discovered Connections",
+    "type": "generic.workflow",
+    "base_type": "workflow",
+    "variables": [
+      {
+        "schema_id": "datatype.secure_string",
+        "properties": {
+          "value": "*****",
+          "scope": "local",
+          "name": "API Access Key",
+          "type": "datatype.secure_string",
+          "description": "Your Tufin SecureCloud API access key.  For more information, see https://forum.tufin.com/support/kc/securecloud/Content/SecureCloud/APIAccessKeys.htm",
+          "is_required": false,
+          "is_invisible": false
+        },
+        "unique_name": "variable_workflow_01Q71D715S6S64r6aGcZE7ezgsMHpZqYhFZ",
+        "object_type": "variable_workflow"
+      },
+      {
+        "schema_id": "datatype.string",
+        "properties": {
+          "value": "",
+          "scope": "local",
+          "name": "Cluster Name",
+          "type": "datatype.string",
+          "description": "Name of the cluster",
+          "is_required": false,
+          "is_invisible": false
+        },
+        "unique_name": "variable_workflow_01Q71D715S7Z86TgSVmfRxORARCpJKUMHpE",
+        "object_type": "variable_workflow"
+      },
+      {
+        "schema_id": "datatype.string",
+        "properties": {
+          "value": "",
+          "scope": "local",
+          "name": "Account Name",
+          "type": "datatype.string",
+          "description": "Tufin SecureCloud account name.  If your URL is \"myaccount.securecloud.tufin.io\", your account name should be \"myaccount\".  Do not include \"securecloud.tufin.io\" in this variable.",
+          "is_required": false,
+          "is_invisible": false
+        },
+        "unique_name": "variable_workflow_01Q71D715S5IN1xJhQpfu1PY6N322XsjSYt",
+        "object_type": "variable_workflow"
+      }
+    ],
+    "properties": {
+      "atomic": {
+        "atomic_group": "Tufin",
+        "is_atomic": true
+      },
+      "delete_workflow_instance": false,
+      "description": "Delete all discovered connections for the Kubernetes cluster",
+      "display_name": "Tufin SecureCloud - Delete Discovered Connections",
+      "runtime_user": {
+        "target_default": true
+      },
+      "target": {
+        "target_type": "web-service.endpoint",
+        "specify_on_workflow_start": true
+      }
+    },
+    "object_type": "definition_workflow",
+    "actions": [
+      {
+        "unique_name": "definition_activity_01Q71D7C2GG7Z7fNtHIVs4uRr1gnNGLcjfy",
+        "name": "Execute Python Script",
+        "title": "Build Hostname for API",
+        "type": "python3.script",
+        "base_type": "activity",
+        "properties": {
+          "action_timeout": 180,
+          "continue_on_failure": false,
+          "description": "Build the host parameter for the Host HTTP header",
+          "display_name": "Build Hostname for API",
+          "script": "import sys\nhostname = sys.argv[1]\nhostname = '{}.securecloud.tufin.io'.format(hostname)",
+          "script_arguments": [
+            "$workflow.definition_workflow_01Q71D71CB6YS18iDGMeS4AfeyoaaBgwCjP.local.variable_workflow_01Q71D715S5IN1xJhQpfu1PY6N322XsjSYt$"
+          ],
+          "script_queries": [
+            {
+              "script_query": "hostname",
+              "script_query_name": "Host Name",
+              "script_query_type": "string"
+            }
+          ],
+          "skip_execution": false
+        },
+        "object_type": "definition_activity"
+      },
+      {
+        "unique_name": "definition_activity_01Q71D7KQNGYL4Y6BPkJK6xAnnY3dvHdMUP",
+        "name": "HTTP Request",
+        "title": "Delete Discovered Connections",
+        "type": "web-service.http_request",
+        "base_type": "activity",
+        "properties": {
+          "accept": "application/json",
+          "action_timeout": 180,
+          "allow_auto_redirect": true,
+          "content_type": "application/json",
+          "continue_on_error_status_code": true,
+          "continue_on_failure": true,
+          "custom_headers": [
+            {
+              "name": "Authorization",
+              "value": "Bearer $workflow.definition_workflow_01Q71D71CB6YS18iDGMeS4AfeyoaaBgwCjP.local.variable_workflow_01Q71D715S6S64r6aGcZE7ezgsMHpZqYhFZ$"
+            },
+            {
+              "name": "Host",
+              "value": "$activity.definition_activity_01Q71D7C2GG7Z7fNtHIVs4uRr1gnNGLcjfy.output.script_queries.Host Name$"
+            }
+          ],
+          "display_name": "Delete Discovered Connections",
+          "method": "DELETE",
+          "relative_url": "/api/v1/orca/model/clusters/$workflow.definition_workflow_01Q71D71CB6YS18iDGMeS4AfeyoaaBgwCjP.local.variable_workflow_01Q71D715S7Z86TgSVmfRxORARCpJKUMHpE$/connections",
+          "runtime_user": {
+            "target_default": true
+          },
+          "skip_execution": false,
+          "target": {
+            "use_workflow_target": true
+          }
+        },
+        "object_type": "definition_activity"
+      },
+      {
+        "unique_name": "definition_activity_01Q71D7PKF02D45HC9zWXbpvVlb6Z9stc5O",
+        "name": "Condition Block",
+        "title": "Is Response OK?",
+        "type": "logic.if_else",
+        "base_type": "activity",
+        "properties": {
+          "continue_on_failure": false,
+          "display_name": "Is Response OK?",
+          "skip_execution": false
+        },
+        "object_type": "definition_activity",
+        "blocks": [
+          {
+            "unique_name": "definition_activity_01Q71D7TRKRL24kH9giTZEttSCJxyxefpMP",
+            "name": "Condition Branch",
+            "title": "No without Status Code",
+            "type": "logic.condition_block",
+            "base_type": "activity",
+            "properties": {
+              "condition": {
+                "left_operand": "$activity.definition_activity_01Q71D7KQNGYL4Y6BPkJK6xAnnY3dvHdMUP.output.succeeded$",
+                "operator": "eq",
+                "right_operand": false
+              },
+              "continue_on_failure": false,
+              "display_name": "No without Status Code",
+              "skip_execution": false
+            },
+            "object_type": "definition_activity",
+            "actions": [
+              {
+                "unique_name": "definition_activity_01Q71D7VOM7T84B9om7HtR7hw1BiB633V1v",
+                "name": "Execute Python Script",
+                "title": "Create Error Message",
+                "type": "python3.script",
+                "base_type": "activity",
+                "properties": {
+                  "action_timeout": 180,
+                  "continue_on_failure": false,
+                  "display_name": "Create Error Message",
+                  "script": "import sys, json\nmessage = sys.argv[1].replace('\"', '\\'')\nerror = {\"message\": message}\nerror = json.dumps(error)",
+                  "script_arguments": [
+                    "$activity.definition_activity_01Q71D7KQNGYL4Y6BPkJK6xAnnY3dvHdMUP.output.error.message$"
+                  ],
+                  "script_queries": [
+                    {
+                      "script_query": "error",
+                      "script_query_name": "Error",
+                      "script_query_type": "string"
+                    }
+                  ],
+                  "skip_execution": false
+                },
+                "object_type": "definition_activity"
+              },
+              {
+                "unique_name": "definition_activity_01Q71D80Q4LPF4GY9OQUNP1eT64o9iLWVPC",
+                "name": "Completed",
+                "title": "Completed with Error",
+                "type": "logic.completed",
+                "base_type": "activity",
+                "properties": {
+                  "completion_type": "failed-completed",
+                  "continue_on_failure": false,
+                  "display_name": "Completed with Error",
+                  "result_message": "$activity.definition_activity_01Q71D7VOM7T84B9om7HtR7hw1BiB633V1v.output.script_queries.Error$",
+                  "skip_execution": false
+                },
+                "object_type": "definition_activity"
+              }
+            ]
+          },
+          {
+            "unique_name": "definition_activity_01Q71D857HPA31wTHHEeZv3JnjhJ2pKRFja",
+            "name": "Condition Branch",
+            "title": "No with Status Code",
+            "type": "logic.condition_block",
+            "base_type": "activity",
+            "properties": {
+              "condition": {
+                "left_operand": "$activity.definition_activity_01Q71D7KQNGYL4Y6BPkJK6xAnnY3dvHdMUP.output.status_code$",
+                "operator": "ne",
+                "right_operand": 204
+              },
+              "continue_on_failure": false,
+              "display_name": "No with Status Code",
+              "skip_execution": false
+            },
+            "object_type": "definition_activity",
+            "actions": [
+              {
+                "unique_name": "definition_activity_01Q71D873UCEM6nL8MtCj5Q2x089vhz4aik",
+                "name": "Execute Python Script",
+                "title": "Create Error Message",
+                "type": "python3.script",
+                "base_type": "activity",
+                "properties": {
+                  "action_timeout": 180,
+                  "continue_on_failure": false,
+                  "display_name": "Create Error Message",
+                  "script": "import sys, json\nstatus_code = sys.argv[1]\nmessage = sys.argv[2]\nerror = {\"status_code\": status_code, \"message\": message}\nerror = json.dumps(error)",
+                  "script_arguments": [
+                    "$activity.definition_activity_01Q71D7KQNGYL4Y6BPkJK6xAnnY3dvHdMUP.output.status_code$",
+                    "$activity.definition_activity_01Q71D7KQNGYL4Y6BPkJK6xAnnY3dvHdMUP.output.response_body$"
+                  ],
+                  "script_queries": [
+                    {
+                      "script_query": "error",
+                      "script_query_name": "Error",
+                      "script_query_type": "string"
+                    }
+                  ],
+                  "skip_execution": false
+                },
+                "object_type": "definition_activity"
+              },
+              {
+                "unique_name": "definition_activity_01Q71D8BYIJNR0FCxI5yvY1bnPImgcdTGK1",
+                "name": "Completed",
+                "title": "Completed with Error",
+                "type": "logic.completed",
+                "base_type": "activity",
+                "properties": {
+                  "completion_type": "failed-completed",
+                  "continue_on_failure": false,
+                  "display_name": "Completed with Error",
+                  "result_message": "$activity.definition_activity_01Q71D873UCEM6nL8MtCj5Q2x089vhz4aik.output.script_queries.Error$",
+                  "skip_execution": false
+                },
+                "object_type": "definition_activity"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "categories": [
+      "category_01G4JLUINA0E65x8iCa6Behj8y9V0ZE9f8O"
+    ]
+  },
+  "categories": {
+    "category_01G4JLUINA0E65x8iCa6Behj8y9V0ZE9f8O": {
+      "unique_name": "category_01G4JLUINA0E65x8iCa6Behj8y9V0ZE9f8O",
+      "name": "Tufin",
+      "title": "Tufin",
+      "type": "basic.category",
+      "base_type": "category",
+      "description": "Tufin Orchestration Suite",
+      "category_type": "custom",
+      "object_type": "category"
+    }
+  }
+}

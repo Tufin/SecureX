@@ -1,0 +1,429 @@
+{
+  "workflow": {
+    "unique_name": "definition_workflow_01Q70G7IFZ2AW39C7QZ99ChbddBGPDnFJc5",
+    "name": "Tufin SecureCloud - List Public Cloud Policies",
+    "title": "Tufin SecureCloud - List Public Cloud Policies",
+    "type": "generic.workflow",
+    "base_type": "workflow",
+    "variables": [
+      {
+        "schema_id": "datatype.string",
+        "properties": {
+          "value": "",
+          "scope": "local",
+          "name": "Account Name",
+          "type": "datatype.string",
+          "description": "Tufin SecureCloud account name.  If your URL is \"myaccount.securecloud.tufin.io\", your account name should be \"myaccount\".  Do not include \"securecloud.tufin.io\" in this variable.",
+          "is_required": false,
+          "is_invisible": false
+        },
+        "unique_name": "variable_workflow_01Q70G7I8C8WB6N3KbBFo5n74Ref8rjTmGM",
+        "object_type": "variable_workflow"
+      },
+      {
+        "schema_id": "datatype.secure_string",
+        "properties": {
+          "value": "*****",
+          "scope": "local",
+          "name": "API Access Key",
+          "type": "datatype.secure_string",
+          "description": "Your Tufin SecureCloud API access key.  For more information, see https://forum.tufin.com/support/kc/securecloud/Content/SecureCloud/APIAccessKeys.htm",
+          "is_required": false,
+          "is_invisible": false
+        },
+        "unique_name": "variable_workflow_01Q70G7I8CBF33WQs2m8MD8ad5PwdGjwQLL",
+        "object_type": "variable_workflow"
+      },
+      {
+        "schema_id": "datatype.string",
+        "properties": {
+          "value": "[]",
+          "scope": "output",
+          "name": "Policy Objects JSON",
+          "type": "datatype.string",
+          "description": "Output in JSON format",
+          "is_required": false,
+          "is_invisible": false
+        },
+        "unique_name": "variable_workflow_01Q70G7I8C4Q83wjFb99Vcrj12Yt4B7Ra1R",
+        "object_type": "variable_workflow"
+      }
+    ],
+    "properties": {
+      "atomic": {
+        "atomic_group": "Tufin",
+        "is_atomic": true
+      },
+      "delete_workflow_instance": false,
+      "description": "List all public cloud policies",
+      "display_name": "Tufin SecureCloud - List Public Cloud Policies",
+      "runtime_user": {
+        "target_default": true
+      },
+      "target": {
+        "target_type": "web-service.endpoint",
+        "specify_on_workflow_start": true
+      }
+    },
+    "object_type": "definition_workflow",
+    "actions": [
+      {
+        "unique_name": "definition_activity_01Q70G7SH5K7L1Y5WF2idYtrkxyj41kigWu",
+        "name": "Execute Python Script",
+        "title": "Build Hostname for API",
+        "type": "python3.script",
+        "base_type": "activity",
+        "properties": {
+          "action_timeout": 180,
+          "continue_on_failure": false,
+          "description": "Build the host parameter for the Host HTTP header",
+          "display_name": "Build Hostname for API",
+          "script": "import sys\nhostname = sys.argv[1]\nhostname = '{}.securecloud.tufin.io'.format(hostname)",
+          "script_arguments": [
+            "$workflow.definition_workflow_01Q70G7IFZ2AW39C7QZ99ChbddBGPDnFJc5.local.variable_workflow_01Q70G7I8C8WB6N3KbBFo5n74Ref8rjTmGM$"
+          ],
+          "script_queries": [
+            {
+              "script_query": "hostname",
+              "script_query_name": "Host Name",
+              "script_query_type": "string"
+            }
+          ],
+          "skip_execution": false
+        },
+        "object_type": "definition_activity"
+      },
+      {
+        "unique_name": "definition_activity_01Q70G7WPBKD63AHy8LN0uaNzfmzbOaw2mT",
+        "name": "HTTP Request",
+        "title": "Get Policies",
+        "type": "web-service.http_request",
+        "base_type": "activity",
+        "properties": {
+          "accept": "application/json",
+          "action_timeout": 180,
+          "allow_auto_redirect": true,
+          "continue_on_error_status_code": true,
+          "continue_on_failure": true,
+          "custom_headers": [
+            {
+              "name": "Authorization",
+              "value": "Bearer $workflow.definition_workflow_01Q70G7IFZ2AW39C7QZ99ChbddBGPDnFJc5.local.variable_workflow_01Q70G7I8CBF33WQs2m8MD8ad5PwdGjwQLL$"
+            },
+            {
+              "name": "Host",
+              "value": "$activity.definition_activity_01Q70G7SH5K7L1Y5WF2idYtrkxyj41kigWu.output.script_queries.Host Name$"
+            }
+          ],
+          "display_name": "Get Policies",
+          "method": "GET",
+          "relative_url": "/api/iris/conf/global/policy/",
+          "runtime_user": {
+            "target_default": true
+          },
+          "skip_execution": false,
+          "target": {
+            "use_workflow_target": true
+          }
+        },
+        "object_type": "definition_activity"
+      },
+      {
+        "unique_name": "definition_activity_01Q70G81F904H57bg79yzPyLCeLaRDJQjpN",
+        "name": "Condition Block",
+        "title": "Is Response OK?",
+        "type": "logic.if_else",
+        "base_type": "activity",
+        "properties": {
+          "continue_on_failure": false,
+          "display_name": "Is Response OK?",
+          "skip_execution": false
+        },
+        "object_type": "definition_activity",
+        "blocks": [
+          {
+            "unique_name": "definition_activity_01Q70G85PWBFU1YEjmJa9zfDJ88XNgo3qfF",
+            "name": "Condition Branch",
+            "title": "No without Status Code",
+            "type": "logic.condition_block",
+            "base_type": "activity",
+            "properties": {
+              "condition": {
+                "left_operand": "$activity.definition_activity_01Q70G7WPBKD63AHy8LN0uaNzfmzbOaw2mT.output.succeeded$",
+                "operator": "eq",
+                "right_operand": false
+              },
+              "continue_on_failure": false,
+              "display_name": "No without Status Code",
+              "skip_execution": false
+            },
+            "object_type": "definition_activity",
+            "actions": [
+              {
+                "unique_name": "definition_activity_01Q70G87SG1H40JrgZlTrfDaNMpE5eoZLNV",
+                "name": "Execute Python Script",
+                "title": "Create Error Message",
+                "type": "python3.script",
+                "base_type": "activity",
+                "properties": {
+                  "action_timeout": 180,
+                  "continue_on_failure": false,
+                  "display_name": "Create Error Message",
+                  "script": "import sys, json\nmessage = sys.argv[1].replace('\"', '\\'')\nerror = {\"message\": message}\nerror = json.dumps(error)",
+                  "script_arguments": [
+                    "$activity.definition_activity_01Q70G7WPBKD63AHy8LN0uaNzfmzbOaw2mT.output.error.message$"
+                  ],
+                  "script_queries": [
+                    {
+                      "script_query": "error",
+                      "script_query_name": "Error",
+                      "script_query_type": "string"
+                    }
+                  ],
+                  "skip_execution": false
+                },
+                "object_type": "definition_activity"
+              },
+              {
+                "unique_name": "definition_activity_01Q70G8CPRX0C0wlELgoD36Qy867tDuXYHh",
+                "name": "Completed",
+                "title": "Completed with Error",
+                "type": "logic.completed",
+                "base_type": "activity",
+                "properties": {
+                  "completion_type": "failed-completed",
+                  "continue_on_failure": false,
+                  "display_name": "Completed with Error",
+                  "result_message": "$activity.definition_activity_01Q70G87SG1H40JrgZlTrfDaNMpE5eoZLNV.output.script_queries.Error$",
+                  "skip_execution": false
+                },
+                "object_type": "definition_activity"
+              }
+            ]
+          },
+          {
+            "unique_name": "definition_activity_01Q70G8H27QKQ7gaVuBnMEpYyrzOukoiDkb",
+            "name": "Condition Branch",
+            "title": "No with Status Code",
+            "type": "logic.condition_block",
+            "base_type": "activity",
+            "properties": {
+              "condition": {
+                "left_operand": "$activity.definition_activity_01Q70G7WPBKD63AHy8LN0uaNzfmzbOaw2mT.output.status_code$",
+                "operator": "ne",
+                "right_operand": 200
+              },
+              "continue_on_failure": false,
+              "display_name": "No with Status Code",
+              "skip_execution": false
+            },
+            "object_type": "definition_activity",
+            "actions": [
+              {
+                "unique_name": "definition_activity_01Q70G8J5BFE63u94dJHAN3ntvGYB0IqoVf",
+                "name": "Execute Python Script",
+                "title": "Create Error Message",
+                "type": "python3.script",
+                "base_type": "activity",
+                "properties": {
+                  "action_timeout": 180,
+                  "continue_on_failure": false,
+                  "display_name": "Create Error Message",
+                  "script": "import sys, json\nstatus_code = sys.argv[1]\nmessage = sys.argv[2]\nerror = {\"status_code\": status_code, \"message\": message}\nerror = json.dumps(error)",
+                  "script_arguments": [
+                    "$activity.definition_activity_01Q70G7WPBKD63AHy8LN0uaNzfmzbOaw2mT.output.status_code$",
+                    "$activity.definition_activity_01Q70G7WPBKD63AHy8LN0uaNzfmzbOaw2mT.output.response_body$"
+                  ],
+                  "script_queries": [
+                    {
+                      "script_query": "error",
+                      "script_query_name": "Error",
+                      "script_query_type": "string"
+                    }
+                  ],
+                  "skip_execution": false
+                },
+                "object_type": "definition_activity"
+              },
+              {
+                "unique_name": "definition_activity_01Q70G8NUZY6Q4GsEh4PI8WluyFmZRz1bg0",
+                "name": "Completed",
+                "title": "Completed with Error",
+                "type": "logic.completed",
+                "base_type": "activity",
+                "properties": {
+                  "completion_type": "failed-completed",
+                  "continue_on_failure": false,
+                  "display_name": "Completed with Error",
+                  "result_message": "$activity.definition_activity_01Q70G8J5BFE63u94dJHAN3ntvGYB0IqoVf.output.script_queries.Error$",
+                  "skip_execution": false
+                },
+                "object_type": "definition_activity"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "unique_name": "definition_activity_01Q70G8S13VO34RneyrAKW4pzzWPEBqI6tQ",
+        "name": "Execute Python Script",
+        "title": "Build Policy Object JSON",
+        "type": "python3.script",
+        "base_type": "activity",
+        "properties": {
+          "action_timeout": 180,
+          "continue_on_failure": true,
+          "display_name": "Build Policy Object JSON",
+          "script": "import sys, json\ndef from_json(string):\n    return json.loads(string)\nresults, policy_objects = map(from_json, sys.argv[1:])\nfor item in results['rules']:\n    policy_objects.append(\n        item\n    )\npolicy_objects = json.dumps(policy_objects)",
+          "script_arguments": [
+            "$activity.definition_activity_01Q70G7WPBKD63AHy8LN0uaNzfmzbOaw2mT.output.response_body$",
+            "$workflow.definition_workflow_01Q70G7IFZ2AW39C7QZ99ChbddBGPDnFJc5.output.variable_workflow_01Q70G7I8C4Q83wjFb99Vcrj12Yt4B7Ra1R$"
+          ],
+          "script_queries": [
+            {
+              "script_query": "policy_objects",
+              "script_query_name": "Policy Objects",
+              "script_query_type": "string"
+            }
+          ],
+          "skip_execution": false
+        },
+        "object_type": "definition_activity"
+      },
+      {
+        "unique_name": "definition_activity_01Q70G8WT6QOL2IqPHHMRxiT4caxpBIpxrF",
+        "name": "Condition Block",
+        "title": "Object Extraction Succeeded?",
+        "type": "logic.if_else",
+        "base_type": "activity",
+        "properties": {
+          "continue_on_failure": false,
+          "display_name": "Object Extraction Succeeded?",
+          "skip_execution": false
+        },
+        "object_type": "definition_activity",
+        "blocks": [
+          {
+            "unique_name": "definition_activity_01Q70G91H65EG3ixArKGlzb9h9fCNjfAl51",
+            "name": "Condition Branch",
+            "title": "No",
+            "type": "logic.condition_block",
+            "base_type": "activity",
+            "properties": {
+              "condition": {
+                "left_operand": "$activity.definition_activity_01Q70G8S13VO34RneyrAKW4pzzWPEBqI6tQ.output.succeeded$",
+                "operator": "eq",
+                "right_operand": false
+              },
+              "continue_on_failure": false,
+              "display_name": "No",
+              "skip_execution": false
+            },
+            "object_type": "definition_activity",
+            "actions": [
+              {
+                "unique_name": "definition_activity_01Q70G93ILFJO23vCZt4ePu3NIHtK5W3ZLa",
+                "name": "Completed",
+                "title": "Error Message",
+                "type": "logic.completed",
+                "base_type": "activity",
+                "properties": {
+                  "completion_type": "failed-completed",
+                  "continue_on_failure": false,
+                  "display_name": "Error Message",
+                  "result_message": "{\"message\": \"Tufin response data structure has changed. Atomic action needs to be fixed.\"}",
+                  "skip_execution": false
+                },
+                "object_type": "definition_activity"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "unique_name": "definition_activity_01Q70G97S9GXC20TrHugNFTgdVW7wfbDNJQ",
+        "name": "Set Variables",
+        "title": "Set Policy Object JSON",
+        "type": "core.set_multiple_variables",
+        "base_type": "activity",
+        "properties": {
+          "continue_on_failure": false,
+          "display_name": "Set Policy Object JSON",
+          "skip_execution": false,
+          "variables_to_update": [
+            {
+              "variable_to_update": "$workflow.definition_workflow_01Q70G7IFZ2AW39C7QZ99ChbddBGPDnFJc5.output.variable_workflow_01Q70G7I8C4Q83wjFb99Vcrj12Yt4B7Ra1R$",
+              "variable_value_new": "$activity.definition_activity_01Q70G8S13VO34RneyrAKW4pzzWPEBqI6tQ.output.script_queries.Policy Objects$"
+            }
+          ]
+        },
+        "object_type": "definition_activity"
+      },
+      {
+        "unique_name": "definition_activity_01Q70G9CGQPAV1V2CCM75HD7NdVAPjzmhts",
+        "name": "Condition Block",
+        "title": "Are There Asset Objects?",
+        "type": "logic.if_else",
+        "base_type": "activity",
+        "properties": {
+          "continue_on_failure": false,
+          "display_name": "Are There Asset Objects?",
+          "skip_execution": false
+        },
+        "object_type": "definition_activity",
+        "blocks": [
+          {
+            "unique_name": "definition_activity_01Q70G9HP4PZ51YMAphPIzaZWUHc3VPwAkd",
+            "name": "Condition Branch",
+            "title": "No",
+            "type": "logic.condition_block",
+            "base_type": "activity",
+            "properties": {
+              "condition": {
+                "left_operand": "$workflow.definition_workflow_01Q70G7IFZ2AW39C7QZ99ChbddBGPDnFJc5.output.variable_workflow_01Q70G7I8C4Q83wjFb99Vcrj12Yt4B7Ra1R$",
+                "operator": "eq",
+                "right_operand": "[]"
+              },
+              "continue_on_failure": false,
+              "display_name": "No",
+              "skip_execution": false
+            },
+            "object_type": "definition_activity",
+            "actions": [
+              {
+                "unique_name": "definition_activity_01Q70G9JL50W94Jj29IvGJ0BbV6G6XEzz7k",
+                "name": "Completed",
+                "title": "No Objects Message",
+                "type": "logic.completed",
+                "base_type": "activity",
+                "properties": {
+                  "completion_type": "failed-completed",
+                  "continue_on_failure": false,
+                  "display_name": "No Objects Message",
+                  "result_message": "{\"message\": \"There are no network objects\"}",
+                  "skip_execution": false
+                },
+                "object_type": "definition_activity"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "categories": [
+      "category_01G4JLUINA0E65x8iCa6Behj8y9V0ZE9f8O"
+    ]
+  },
+  "categories": {
+    "category_01G4JLUINA0E65x8iCa6Behj8y9V0ZE9f8O": {
+      "unique_name": "category_01G4JLUINA0E65x8iCa6Behj8y9V0ZE9f8O",
+      "name": "Tufin",
+      "title": "Tufin",
+      "type": "basic.category",
+      "base_type": "category",
+      "description": "Tufin Orchestration Suite",
+      "category_type": "custom",
+      "object_type": "category"
+    }
+  }
+}
