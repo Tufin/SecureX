@@ -103,10 +103,6 @@ SecureCloud uses an HTTP Endpoint target to identify your SecureCloud instance. 
 22. Tufin SecureCloud - List K8S Workloads for Cluster
  
 23. Tufin SecureCloud - List Public Cloud Policies
- 
-24. Tufin SecureCloud - Set Cluster to Enforce Mode
- 
-25. Tufin SecureCloud - Set Cluster to Learn Mode
 
 
 ### 1. Tufin Resolve Objects
@@ -553,34 +549,6 @@ No input
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | Policy Objects JSON | String | See https://***youraccount***.securecloud.tufin.io/api-documentation/index.html#/Policy/get_api_v1_iris_conf_global_policy |
-
-### 24. Tufin SecureCloud - Set Cluster to Enforce Mode
-
-Turn on enforce mode for a cluster to enforce the defined Kubernetes policy
-
-##### Input
-
-| **Argument Name** | **Description** | **Required** |
-| --- | --- | --- |
-| Cluster Name | Name of the cluster | Yes | 
-
-##### Output
-
-No output
-
-### 25. Tufin SecureCloud - Set Cluster to Learn Mode
-
-Turn off enforce mode and allow all Kubernetes traffic
-
-##### Input
-
-| **Argument Name** | **Description** | **Required** |
-| --- | --- | --- |
-| Cluster Name | Name of the cluster | Yes | 
-
-##### Output
-
-No output
 
 ## Troubleshooting
 
