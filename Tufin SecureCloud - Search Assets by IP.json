@@ -1,0 +1,667 @@
+{
+  "workflow": {
+    "unique_name": "definition_workflow_01TD191R8P6XA1OKzbHjJLYkllstIqdykyi",
+    "name": "Tufin SecureCloud - Search Assets by IP",
+    "title": "Tufin SecureCloud - Search Assets by IP",
+    "type": "generic.workflow",
+    "base_type": "workflow",
+    "variables": [
+      {
+        "schema_id": "datatype.string",
+        "properties": {
+          "value": "",
+          "scope": "local",
+          "name": "Cluster List Results",
+          "type": "datatype.string",
+          "is_required": false,
+          "is_invisible": false
+        },
+        "unique_name": "variable_workflow_01TD2FWRBTYXU5hpD35E4or3ZnQmjCkanyQ",
+        "object_type": "variable_workflow"
+      },
+      {
+        "schema_id": "datatype.secure_string",
+        "properties": {
+          "value": "",
+          "scope": "input",
+          "name": "API Access Key",
+          "type": "datatype.secure_string",
+          "description": "Your Tufin SecureCloud API access key.  For more information, see https://forum.tufin.com/support/kc/securecloud/Content/SecureCloud/APIAccessKeys.htm",
+          "is_required": true,
+          "is_invisible": false
+        },
+        "unique_name": "variable_workflow_01TD1UXENB8QZ0vSRaOiCnPN9uT1K3TT1JG",
+        "object_type": "variable_workflow"
+      },
+      {
+        "schema_id": "datatype.string",
+        "properties": {
+          "value": "",
+          "scope": "input",
+          "name": "Cluster Name",
+          "type": "datatype.string",
+          "description": "Limit the K8S service search to the specified cluster name",
+          "is_required": false,
+          "is_invisible": false
+        },
+        "unique_name": "variable_workflow_01TD2AD919WOD7id7d1Q7EJlptQVMAeYuuB",
+        "object_type": "variable_workflow"
+      },
+      {
+        "schema_id": "datatype.string",
+        "properties": {
+          "value": "",
+          "scope": "output",
+          "name": "Public Cloud Asset Matches",
+          "type": "datatype.string",
+          "description": "Public cloud assets with public or private IP addresses matching the queried IP address",
+          "is_required": false,
+          "is_invisible": false
+        },
+        "unique_name": "variable_workflow_01TD1SP9T2QX13gViFiDICeFSjkzMmf1HmE",
+        "object_type": "variable_workflow"
+      },
+      {
+        "schema_id": "datatype.string",
+        "properties": {
+          "value": "",
+          "scope": "input",
+          "name": "IP Address",
+          "type": "datatype.string",
+          "description": "IP address to query",
+          "is_required": true,
+          "is_invisible": false
+        },
+        "unique_name": "variable_workflow_01TD1TXOBRG2R2vX8sOymuHRTGaf66OG9rD",
+        "object_type": "variable_workflow"
+      },
+      {
+        "schema_id": "datatype.string",
+        "properties": {
+          "value": "",
+          "scope": "input",
+          "name": "Account Name",
+          "type": "datatype.string",
+          "description": "Tufin SecureCloud account name.  If your URL is \"myaccount.securecloud.tufin.io\", your account name should be \"myaccount\".  Do not include \"securecloud.tufin.io\" in this variable.",
+          "is_required": true,
+          "is_invisible": false
+        },
+        "unique_name": "variable_workflow_01TD1A7INDT1E5K6WfS25ihNRkI76uAy7Oo",
+        "object_type": "variable_workflow"
+      },
+      {
+        "schema_id": "datatype.string",
+        "properties": {
+          "value": "",
+          "scope": "output",
+          "name": "K8S Service Matches",
+          "type": "datatype.string",
+          "description": "K8S services with private or endpoint IP addresses matching the queried IP address",
+          "is_required": false,
+          "is_invisible": false
+        },
+        "unique_name": "variable_workflow_01TD30HTNMK9356Nfig6mFL5GrIcJGKncsi",
+        "object_type": "variable_workflow"
+      }
+    ],
+    "properties": {
+      "atomic": {
+        "is_atomic": false
+      },
+      "delete_workflow_instance": false,
+      "display_name": "Tufin SecureCloud - Search Assets by IP",
+      "runtime_user": {
+        "target_default": true
+      },
+      "target": {
+        "target_type": "web-service.endpoint",
+        "target_id": "definition_target_01PWZLT9GER3Q5MT13QpgdehNObJ765ywlu",
+        "execute_on_workflow_target": true
+      }
+    },
+    "object_type": "definition_workflow",
+    "actions": [
+      {
+        "unique_name": "definition_activity_01TD19E1K5N7P1BL93W1vZ2J9TCrE9q3B6M",
+        "name": "Tufin SecureCloud - List Assets",
+        "title": "Tufin SecureCloud - List Assets",
+        "type": "workflow.atomic_workflow",
+        "base_type": "subworkflow",
+        "properties": {
+          "continue_on_failure": true,
+          "display_name": "Tufin SecureCloud - List Assets",
+          "input": {
+            "variable_workflow_01PX1Z31K84YY17P58WjIXCraIJJTTCWvBm": "$workflow.definition_workflow_01TD191R8P6XA1OKzbHjJLYkllstIqdykyi.input.variable_workflow_01TD1UXENB8QZ0vSRaOiCnPN9uT1K3TT1JG$",
+            "variable_workflow_01Q66NQF16F0W2jTGCXj6G20Ki3Xq9Bktlv": "$workflow.definition_workflow_01TD191R8P6XA1OKzbHjJLYkllstIqdykyi.input.variable_workflow_01TD1A7INDT1E5K6WfS25ihNRkI76uAy7Oo$"
+          },
+          "runtime_user": {
+            "target_default": true
+          },
+          "skip_execution": false,
+          "target": {
+            "target_type": "web-service.endpoint",
+            "use_workflow_target": true
+          },
+          "workflow_id": "definition_workflow_01PV33IJRWZSX3qfvJcGqeoYMvqfxd1DVKL"
+        },
+        "object_type": "definition_activity"
+      },
+      {
+        "unique_name": "definition_activity_01TD1BI88INTE6I6ms5h3unyumxZLBz7k9T",
+        "name": "Condition Block",
+        "title": "Condition Block",
+        "type": "logic.if_else",
+        "base_type": "activity",
+        "properties": {
+          "continue_on_failure": false,
+          "display_name": "Condition Block",
+          "skip_execution": false
+        },
+        "object_type": "definition_activity",
+        "blocks": [
+          {
+            "unique_name": "definition_activity_01TD1COZBWSFF00kLXVXvdofQsTUvZ82321",
+            "name": "Condition Branch",
+            "title": "Public Cloud Asset Query Succeeded",
+            "type": "logic.condition_block",
+            "base_type": "activity",
+            "properties": {
+              "condition": {
+                "left_operand": "$activity.definition_activity_01TD19E1K5N7P1BL93W1vZ2J9TCrE9q3B6M.output.succeeded$",
+                "operator": "eq",
+                "right_operand": true
+              },
+              "continue_on_failure": false,
+              "display_name": "Public Cloud Asset Query Succeeded",
+              "skip_execution": false
+            },
+            "object_type": "definition_activity",
+            "actions": [
+              {
+                "unique_name": "definition_activity_01TD1D6E1QF1I71coySVdTot8c8WqaR0DVA",
+                "name": "Execute Python Script",
+                "title": "Search Assets for IP",
+                "type": "python3.script",
+                "base_type": "activity",
+                "properties": {
+                  "action_timeout": 180,
+                  "continue_on_failure": true,
+                  "display_name": "Search Assets for IP",
+                  "script": "import sys\nimport json\nassets = sys.argv[1]\nsearch_ip = sys.argv[2]\nasset_matches = []\nassets = json.loads(assets)\nfor asset in assets:\n    for prop in asset['properties']:\n        if prop['name'] == 'Private IP' or prop['name'] == 'Public IP':\n            for val in prop['values']:\n                if val == search_ip:\n                    asset_matches.append(asset)\nasset_matches = json.dumps(asset_matches)\n",
+                  "script_arguments": [
+                    "$activity.definition_activity_01TD19E1K5N7P1BL93W1vZ2J9TCrE9q3B6M.output.variable_workflow_01PXQCZA7ZH9V3otPfEQY1VCchrdQX7HpPv$",
+                    "$workflow.definition_workflow_01TD191R8P6XA1OKzbHjJLYkllstIqdykyi.input.variable_workflow_01TD1TXOBRG2R2vX8sOymuHRTGaf66OG9rD$"
+                  ],
+                  "script_queries": [
+                    {
+                      "script_query": "asset_matches",
+                      "script_query_name": "Asset Matches",
+                      "script_query_type": "string"
+                    }
+                  ],
+                  "skip_execution": false
+                },
+                "object_type": "definition_activity"
+              },
+              {
+                "unique_name": "definition_activity_01TD1SUOKOHFI0qWi4SRk5sk0K17Qi7kqdK",
+                "name": "Set Variables",
+                "title": "Set Public Cloud Asset Matches Variable",
+                "type": "core.set_multiple_variables",
+                "base_type": "activity",
+                "properties": {
+                  "continue_on_failure": false,
+                  "display_name": "Set Public Cloud Asset Matches Variable",
+                  "skip_execution": false,
+                  "variables_to_update": [
+                    {
+                      "variable_to_update": "$workflow.definition_workflow_01TD191R8P6XA1OKzbHjJLYkllstIqdykyi.output.variable_workflow_01TD1SP9T2QX13gViFiDICeFSjkzMmf1HmE$",
+                      "variable_value_new": "$activity.definition_activity_01TD1D6E1QF1I71coySVdTot8c8WqaR0DVA.output.script_queries.Asset Matches$"
+                    }
+                  ]
+                },
+                "object_type": "definition_activity"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "unique_name": "definition_activity_01TD2AHSDK5WE5K9TIqoz7fDwRqhbNDDRPp",
+        "name": "Condition Block",
+        "title": "Condition Block",
+        "type": "logic.if_else",
+        "base_type": "activity",
+        "properties": {
+          "continue_on_failure": false,
+          "display_name": "Condition Block",
+          "skip_execution": false
+        },
+        "object_type": "definition_activity",
+        "blocks": [
+          {
+            "unique_name": "definition_activity_01TD2AHSMKYGE4YjFKcMD0iACsHYV7BjSQC",
+            "name": "Condition Branch",
+            "title": "Cluster Name Specified",
+            "type": "logic.condition_block",
+            "base_type": "activity",
+            "properties": {
+              "condition": {
+                "left_operand": "$workflow.definition_workflow_01TD191R8P6XA1OKzbHjJLYkllstIqdykyi.input.variable_workflow_01TD2AD919WOD7id7d1Q7EJlptQVMAeYuuB$",
+                "operator": "ne",
+                "right_operand": ""
+              },
+              "continue_on_failure": false,
+              "display_name": "Cluster Name Specified",
+              "skip_execution": false
+            },
+            "object_type": "definition_activity",
+            "actions": [
+              {
+                "unique_name": "definition_activity_01TD28T9OZOUP3i8D4YsXH4jycxkhAqacBh",
+                "name": "Tufin SecureCloud - List K8S Services for Cluster",
+                "title": "Tufin SecureCloud - List K8S Services for Cluster",
+                "type": "workflow.atomic_workflow",
+                "base_type": "subworkflow",
+                "properties": {
+                  "continue_on_failure": true,
+                  "display_name": "Tufin SecureCloud - List K8S Services for Cluster",
+                  "input": {
+                    "variable_workflow_01Q686ZVWJHB604OuAwuhT2T5uHnjeNZMeN": "$workflow.definition_workflow_01TD191R8P6XA1OKzbHjJLYkllstIqdykyi.input.variable_workflow_01TD1UXENB8QZ0vSRaOiCnPN9uT1K3TT1JG$",
+                    "variable_workflow_01Q686ZVWJL3530KdpmmzXbysK7VDC3uGjT": "$workflow.definition_workflow_01TD191R8P6XA1OKzbHjJLYkllstIqdykyi.input.variable_workflow_01TD2AD919WOD7id7d1Q7EJlptQVMAeYuuB$",
+                    "variable_workflow_01Q686ZVWJMDX3qmwHLjQFobMdx1F1Om3lG": "$workflow.definition_workflow_01TD191R8P6XA1OKzbHjJLYkllstIqdykyi.input.variable_workflow_01TD1A7INDT1E5K6WfS25ihNRkI76uAy7Oo$"
+                  },
+                  "runtime_user": {
+                    "target_default": true
+                  },
+                  "skip_execution": false,
+                  "target": {
+                    "target_type": "web-service.endpoint",
+                    "use_workflow_target": true
+                  },
+                  "workflow_id": "definition_workflow_01Q686ZW326D924qI8qaXqg7qM4EpPoDafY"
+                },
+                "object_type": "definition_activity"
+              },
+              {
+                "unique_name": "definition_activity_01TD3BG4AK12L5tbelTUCLBcphPgVvkzHaP",
+                "name": "Condition Block",
+                "title": "Condition Block",
+                "type": "logic.if_else",
+                "base_type": "activity",
+                "properties": {
+                  "continue_on_failure": false,
+                  "display_name": "Condition Block",
+                  "skip_execution": false
+                },
+                "object_type": "definition_activity",
+                "blocks": [
+                  {
+                    "unique_name": "definition_activity_01TD3BG4I1KUN1dneksOQZPgDj52KGlk2vR",
+                    "name": "Condition Branch",
+                    "title": "K8S Service Query Succeeded",
+                    "type": "logic.condition_block",
+                    "base_type": "activity",
+                    "properties": {
+                      "condition": {
+                        "left_operand": "$activity.definition_activity_01TD28T9OZOUP3i8D4YsXH4jycxkhAqacBh.output.succeeded$",
+                        "operator": "eq",
+                        "right_operand": true
+                      },
+                      "continue_on_failure": false,
+                      "display_name": "K8S Service Query Succeeded",
+                      "skip_execution": false
+                    },
+                    "object_type": "definition_activity",
+                    "actions": [
+                      {
+                        "unique_name": "definition_activity_01TD3C2EOOFHZ6xrPHnDlESr6lf3LCDU4ej",
+                        "name": "Execute Python Script",
+                        "title": "Search Services for IP",
+                        "type": "python3.script",
+                        "base_type": "activity",
+                        "properties": {
+                          "action_timeout": 180,
+                          "continue_on_failure": false,
+                          "display_name": "Search Services for IP",
+                          "script": "import sys\nimport json\nservices = sys.argv[1]\nsearch_ip = sys.argv[2]\nservices_matches = []\nservices = json.loads(services)\nfor service in services:\n    if service['private_ip'] == search_ip:\n        services_matches.append(service)\n        continue\n    if 'endpoints' in service.keys():\n        if service['endpoints'] is not None:\n            for endpoint in service['endpoints']:\n                if search_ip in endpoint:\n                    services_matches.append(service)\n                    break\n\nservices_matches = json.dumps(services_matches)",
+                          "script_arguments": [
+                            "$activity.definition_activity_01TD28T9OZOUP3i8D4YsXH4jycxkhAqacBh.output.variable_workflow_01Q686ZVWJJSP2f7yVAvlGT7XRUk5GTJg5G$",
+                            "$workflow.definition_workflow_01TD191R8P6XA1OKzbHjJLYkllstIqdykyi.input.variable_workflow_01TD1TXOBRG2R2vX8sOymuHRTGaf66OG9rD$"
+                          ],
+                          "script_queries": [
+                            {
+                              "script_query": "services_matches",
+                              "script_query_name": "Service Matches",
+                              "script_query_type": "string"
+                            }
+                          ],
+                          "skip_execution": false
+                        },
+                        "object_type": "definition_activity"
+                      },
+                      {
+                        "unique_name": "definition_activity_01TD3D3HD741P10qCyNwM2aXdphBZoxkgjO",
+                        "name": "Set Variables",
+                        "title": "Set K8S Service Matches Variable",
+                        "type": "core.set_multiple_variables",
+                        "base_type": "activity",
+                        "properties": {
+                          "continue_on_failure": false,
+                          "display_name": "Set K8S Service Matches Variable",
+                          "skip_execution": false,
+                          "variables_to_update": [
+                            {
+                              "variable_to_update": "$workflow.definition_workflow_01TD191R8P6XA1OKzbHjJLYkllstIqdykyi.output.variable_workflow_01TD30HTNMK9356Nfig6mFL5GrIcJGKncsi$",
+                              "variable_value_new": "$activity.definition_activity_01TD3C2EOOFHZ6xrPHnDlESr6lf3LCDU4ej.output.script_queries.Service Matches$"
+                            }
+                          ]
+                        },
+                        "object_type": "definition_activity"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "unique_name": "definition_activity_01TD2AHSXD8ZK4nzXPtwKYE23Ro8eEUR3kM",
+            "name": "Condition Branch",
+            "title": "Cluster Name Not Specified",
+            "type": "logic.condition_block",
+            "base_type": "activity",
+            "properties": {
+              "condition": {
+                "left_operand": "$workflow.definition_workflow_01TD191R8P6XA1OKzbHjJLYkllstIqdykyi.input.variable_workflow_01TD2AD919WOD7id7d1Q7EJlptQVMAeYuuB$",
+                "operator": "eq",
+                "right_operand": ""
+              },
+              "continue_on_failure": false,
+              "display_name": "Cluster Name Not Specified",
+              "skip_execution": false
+            },
+            "object_type": "definition_activity",
+            "actions": [
+              {
+                "unique_name": "definition_activity_01TD2BP3PNRVE12cF4rYZYJHL2udSDOFj7L",
+                "name": "Tufin SecureCloud - List K8S Clusters",
+                "title": "Tufin SecureCloud - List K8S Clusters",
+                "type": "workflow.atomic_workflow",
+                "base_type": "subworkflow",
+                "properties": {
+                  "continue_on_failure": true,
+                  "display_name": "Tufin SecureCloud - List K8S Clusters",
+                  "input": {
+                    "variable_workflow_01Q67AB4177TL7i5ILPVNSzNrMWzyXwKYNy": "$workflow.definition_workflow_01TD191R8P6XA1OKzbHjJLYkllstIqdykyi.input.variable_workflow_01TD1UXENB8QZ0vSRaOiCnPN9uT1K3TT1JG$",
+                    "variable_workflow_01Q67AB4179M43Wy0QHy3NA2zLYu3cjCNJ9": "$workflow.definition_workflow_01TD191R8P6XA1OKzbHjJLYkllstIqdykyi.input.variable_workflow_01TD1A7INDT1E5K6WfS25ihNRkI76uAy7Oo$"
+                  },
+                  "runtime_user": {
+                    "target_default": true
+                  },
+                  "skip_execution": false,
+                  "target": {
+                    "target_type": "web-service.endpoint",
+                    "use_workflow_target": true
+                  },
+                  "workflow_id": "definition_workflow_01Q67AB4DRM1T7fWAngF5wbqJWj7qQAZyZe"
+                },
+                "object_type": "definition_activity"
+              },
+              {
+                "unique_name": "definition_activity_01TD2C1DL8IRV6NTpNw2nGj8j0sJFMBy3cj",
+                "name": "Condition Block",
+                "title": "Condition Block",
+                "type": "logic.if_else",
+                "base_type": "activity",
+                "properties": {
+                  "continue_on_failure": false,
+                  "display_name": "Condition Block",
+                  "skip_execution": false
+                },
+                "object_type": "definition_activity",
+                "blocks": [
+                  {
+                    "unique_name": "definition_activity_01TD2C1DUF8WY4DteOgRxDJ5RVHmUsufRVB",
+                    "name": "Condition Branch",
+                    "title": "Cluster Listing Succeeded",
+                    "type": "logic.condition_block",
+                    "base_type": "activity",
+                    "properties": {
+                      "condition": {
+                        "left_operand": "$activity.definition_activity_01TD2BP3PNRVE12cF4rYZYJHL2udSDOFj7L.output.succeeded$",
+                        "operator": "eq",
+                        "right_operand": true
+                      },
+                      "continue_on_failure": true,
+                      "display_name": "Cluster Listing Succeeded",
+                      "skip_execution": false
+                    },
+                    "object_type": "definition_activity",
+                    "actions": [
+                      {
+                        "unique_name": "definition_activity_01TD2GFBRE13N6n0u7N1skcsiCjmBqm5Q1I",
+                        "name": "Execute Python Script",
+                        "title": "Generate Cluster Name List",
+                        "type": "python3.script",
+                        "base_type": "activity",
+                        "properties": {
+                          "action_timeout": 180,
+                          "continue_on_failure": false,
+                          "display_name": "Generate Cluster Name List",
+                          "script": "import sys\nimport json\n\ncluster_list = []\njson_list = sys.argv[1]\nfor item in json.loads(json_list):\n    cluster_list.append(item['name'])\ncluster_list = ','.join(cluster_list)",
+                          "script_arguments": [
+                            "$activity.definition_activity_01TD2BP3PNRVE12cF4rYZYJHL2udSDOFj7L.output.variable_workflow_01Q67AB41739W7ejEkqbzgf7NE8ZYZYmIW3$"
+                          ],
+                          "script_queries": [
+                            {
+                              "script_query": "cluster_list",
+                              "script_query_name": "Cluster List",
+                              "script_query_type": "string"
+                            }
+                          ],
+                          "skip_execution": false
+                        },
+                        "object_type": "definition_activity"
+                      },
+                      {
+                        "unique_name": "definition_activity_01TD2N00NAKVD6q9RQ8mBxJS8UCH21Ifbpe",
+                        "name": "Split String",
+                        "title": "Create Cluster Name Array",
+                        "type": "core.splitstring",
+                        "base_type": "activity",
+                        "properties": {
+                          "boundaries": [
+                            {
+                              "boundary": ","
+                            }
+                          ],
+                          "continue_on_failure": false,
+                          "display_name": "Create Cluster Name Array",
+                          "input_string": "$activity.definition_activity_01TD2GFBRE13N6n0u7N1skcsiCjmBqm5Q1I.output.script_queries.Cluster List$",
+                          "skip_execution": false
+                        },
+                        "object_type": "definition_activity"
+                      },
+                      {
+                        "unique_name": "definition_activity_01TD2JTLBUJID3HV4CrbufAUksFSqJfvnyn",
+                        "name": "For Each",
+                        "title": "For Each",
+                        "type": "logic.for_each",
+                        "base_type": "activity",
+                        "properties": {
+                          "continue_on_failure": false,
+                          "display_name": "For Each",
+                          "skip_execution": false,
+                          "source_array": "$activity.definition_activity_01TD2N00NAKVD6q9RQ8mBxJS8UCH21Ifbpe.output.parts$"
+                        },
+                        "object_type": "definition_activity",
+                        "actions": [
+                          {
+                            "unique_name": "definition_activity_01TD2O4DFEGUF4PGu6T3uLcySUva49hfS7N",
+                            "name": "Tufin SecureCloud - List K8S Services for Cluster",
+                            "title": "Tufin SecureCloud - List K8S Services for Cluster",
+                            "type": "workflow.atomic_workflow",
+                            "base_type": "subworkflow",
+                            "properties": {
+                              "continue_on_failure": true,
+                              "display_name": "Tufin SecureCloud - List K8S Services for Cluster",
+                              "input": {
+                                "variable_workflow_01Q686ZVWJHB604OuAwuhT2T5uHnjeNZMeN": "$workflow.definition_workflow_01TD191R8P6XA1OKzbHjJLYkllstIqdykyi.input.variable_workflow_01TD1UXENB8QZ0vSRaOiCnPN9uT1K3TT1JG$",
+                                "variable_workflow_01Q686ZVWJL3530KdpmmzXbysK7VDC3uGjT": "$activity.definition_activity_01TD2JTLBUJID3HV4CrbufAUksFSqJfvnyn.input.source_array[@]$",
+                                "variable_workflow_01Q686ZVWJMDX3qmwHLjQFobMdx1F1Om3lG": "$workflow.definition_workflow_01TD191R8P6XA1OKzbHjJLYkllstIqdykyi.input.variable_workflow_01TD1A7INDT1E5K6WfS25ihNRkI76uAy7Oo$"
+                              },
+                              "runtime_user": {
+                                "target_default": true
+                              },
+                              "skip_execution": false,
+                              "target": {
+                                "target_type": "web-service.endpoint",
+                                "use_workflow_target": true
+                              },
+                              "workflow_id": "definition_workflow_01Q686ZW326D924qI8qaXqg7qM4EpPoDafY"
+                            },
+                            "object_type": "definition_activity"
+                          },
+                          {
+                            "unique_name": "definition_activity_01TD2YJ693G1A7lUtkxlRQHeSCwZ4JHdB2y",
+                            "name": "Condition Block",
+                            "title": "Condition Block",
+                            "type": "logic.if_else",
+                            "base_type": "activity",
+                            "properties": {
+                              "continue_on_failure": false,
+                              "display_name": "Condition Block",
+                              "skip_execution": false
+                            },
+                            "object_type": "definition_activity",
+                            "blocks": [
+                              {
+                                "unique_name": "definition_activity_01TD2YJ6HKF894KUa39K50yl3najlOyjbRh",
+                                "name": "Condition Branch",
+                                "title": "K8S Service Query Succeeded",
+                                "type": "logic.condition_block",
+                                "base_type": "activity",
+                                "properties": {
+                                  "condition": {
+                                    "left_operand": "$activity.definition_activity_01TD2O4DFEGUF4PGu6T3uLcySUva49hfS7N.output.succeeded$",
+                                    "operator": "eq",
+                                    "right_operand": true
+                                  },
+                                  "continue_on_failure": false,
+                                  "display_name": "K8S Service Query Succeeded",
+                                  "skip_execution": false
+                                },
+                                "object_type": "definition_activity",
+                                "actions": [
+                                  {
+                                    "unique_name": "definition_activity_01TD31BCDV0GB61mTKtwlk5mwDxdhC3rP6A",
+                                    "name": "Execute Python Script",
+                                    "title": "Search Services for IP",
+                                    "type": "python3.script",
+                                    "base_type": "activity",
+                                    "properties": {
+                                      "action_timeout": 180,
+                                      "continue_on_failure": false,
+                                      "display_name": "Search Services for IP",
+                                      "script": "import sys\nimport json\nservices = sys.argv[1]\nsearch_ip = sys.argv[2]\nif len(sys.argv[3]) > 0:\n    services_matches = json.loads(sys.argv[3])\nelse:\n    services_matches = []\nservices = json.loads(services)\nfor service in services:\n    if service['private_ip'] == search_ip:\n        services_matches.append(service)\n        continue\n    if 'endpoints' in service.keys():\n        if service['endpoints'] is not None:\n            for endpoint in service['endpoints']:\n                if search_ip in endpoint:\n                    services_matches.append(service)\n                    break\n\nservices_matches = json.dumps(services_matches)",
+                                      "script_arguments": [
+                                        "$activity.definition_activity_01TD2O4DFEGUF4PGu6T3uLcySUva49hfS7N.output.variable_workflow_01Q686ZVWJJSP2f7yVAvlGT7XRUk5GTJg5G$",
+                                        "$workflow.definition_workflow_01TD191R8P6XA1OKzbHjJLYkllstIqdykyi.input.variable_workflow_01TD1TXOBRG2R2vX8sOymuHRTGaf66OG9rD$",
+                                        "$workflow.definition_workflow_01TD191R8P6XA1OKzbHjJLYkllstIqdykyi.output.variable_workflow_01TD30HTNMK9356Nfig6mFL5GrIcJGKncsi$"
+                                      ],
+                                      "script_queries": [
+                                        {
+                                          "script_query": "services_matches",
+                                          "script_query_name": "Service Matches",
+                                          "script_query_type": "string"
+                                        }
+                                      ],
+                                      "skip_execution": false
+                                    },
+                                    "object_type": "definition_activity"
+                                  },
+                                  {
+                                    "unique_name": "definition_activity_01TD39NBZBRBK6CQ1knl7iDQhl2aCz7fJHm",
+                                    "name": "Set Variables",
+                                    "title": "Set K8S Service Matches Variable",
+                                    "type": "core.set_multiple_variables",
+                                    "base_type": "activity",
+                                    "properties": {
+                                      "continue_on_failure": false,
+                                      "display_name": "Set K8S Service Matches Variable",
+                                      "skip_execution": false,
+                                      "variables_to_update": [
+                                        {
+                                          "variable_to_update": "$workflow.definition_workflow_01TD191R8P6XA1OKzbHjJLYkllstIqdykyi.output.variable_workflow_01TD30HTNMK9356Nfig6mFL5GrIcJGKncsi$",
+                                          "variable_value_new": "$activity.definition_activity_01TD31BCDV0GB61mTKtwlk5mwDxdhC3rP6A.output.script_queries.Service Matches$"
+                                        }
+                                      ]
+                                    },
+                                    "object_type": "definition_activity"
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "categories": [
+      "category_01FM7CGPZZCMY0KcvgiGjVH5UaB4y4aDJ7m",
+      "category_01G4JLUINA0E65x8iCa6Behj8y9V0ZE9f8O"
+    ]
+  },
+  "categories": {
+    "category_01FM7CGPZZCMY0KcvgiGjVH5UaB4y4aDJ7m": {
+      "unique_name": "category_01FM7CGPZZCMY0KcvgiGjVH5UaB4y4aDJ7m",
+      "name": "response",
+      "title": "response",
+      "type": "basic.category",
+      "base_type": "category",
+      "category_type": "custom",
+      "object_type": "category"
+    },
+    "category_01G4JLUINA0E65x8iCa6Behj8y9V0ZE9f8O": {
+      "unique_name": "category_01G4JLUINA0E65x8iCa6Behj8y9V0ZE9f8O",
+      "name": "Tufin",
+      "title": "Tufin",
+      "type": "basic.category",
+      "base_type": "category",
+      "description": "Tufin Orchestration Suite",
+      "category_type": "custom",
+      "object_type": "category"
+    }
+  },
+  "targets": {
+    "definition_target_01PWZLT9GER3Q5MT13QpgdehNObJ765ywlu": {
+      "unique_name": "definition_target_01PWZLT9GER3Q5MT13QpgdehNObJ765ywlu",
+      "name": "Generic Bank",
+      "title": "Generic Bank",
+      "type": "web-service.endpoint",
+      "base_type": "target",
+      "object_type": "definition_target",
+      "properties": {
+        "disable_certificate_validation": false,
+        "display_name": "Generic Bank",
+        "host": "generic-bank.securecloud.tufin.io",
+        "ignore_proxy": false,
+        "no_runtime_user": true,
+        "protocol": "https"
+      }
+    }
+  },
+  "atomic_workflows": [
+    "definition_workflow_01PV33IJRWZSX3qfvJcGqeoYMvqfxd1DVKL",
+    "definition_workflow_01Q686ZW326D924qI8qaXqg7qM4EpPoDafY",
+    "definition_workflow_01Q67AB4DRM1T7fWAngF5wbqJWj7qQAZyZe"
+  ]
+}

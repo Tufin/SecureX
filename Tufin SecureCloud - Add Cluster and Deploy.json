@@ -1,0 +1,292 @@
+{
+  "workflow": {
+    "unique_name": "definition_workflow_01T8ZTCDQYORT4g6W087ZPX9Kkssb8ZWrlQ",
+    "name": "Tufin SecureCloud - Add Cluster and Deploy",
+    "title": "Tufin SecureCloud - Add Cluster and Deploy",
+    "type": "generic.workflow",
+    "base_type": "workflow",
+    "variables": [
+      {
+        "schema_id": "datatype.string",
+        "properties": {
+          "value": "",
+          "scope": "input",
+          "name": "Account Name",
+          "type": "datatype.string",
+          "description": "Tufin SecureCloud account name.  If your URL is \"myaccount.securecloud.tufin.io\", your account name should be \"myaccount\".  Do not include \"securecloud.tufin.io\" in this variable.",
+          "is_required": true,
+          "is_invisible": false
+        },
+        "unique_name": "variable_workflow_01T90AEMB3FNI5TlpzR5izVJRnBVB2PQnVY",
+        "object_type": "variable_workflow"
+      },
+      {
+        "schema_id": "datatype.string",
+        "properties": {
+          "value": "",
+          "scope": "input",
+          "name": "Cluster Name",
+          "type": "datatype.string",
+          "description": "Name of the cluster to be created",
+          "is_required": true,
+          "is_invisible": false
+        },
+        "unique_name": "variable_workflow_01T90ARA21F911O5M7hyCs5clz2tu7CUWgH",
+        "object_type": "variable_workflow"
+      },
+      {
+        "schema_id": "datatype.string",
+        "properties": {
+          "value": "",
+          "scope": "input",
+          "name": "API Access Key",
+          "type": "datatype.string",
+          "description": "Your Tufin SecureCloud API access key.  For more information, see https://forum.tufin.com/support/kc/securecloud/Content/SecureCloud/APIAccessKeys.htm",
+          "is_required": true,
+          "is_invisible": false
+        },
+        "unique_name": "variable_workflow_01T90BB4TDQHS2SER5j9pPWpOcAllT3b6Lg",
+        "object_type": "variable_workflow"
+      }
+    ],
+    "properties": {
+      "atomic": {
+        "is_atomic": false
+      },
+      "delete_workflow_instance": false,
+      "description": "Add a new cluster to SecureCloud and retrieve the install command",
+      "display_name": "Tufin SecureCloud - Add Cluster and Deploy",
+      "runtime_user": {
+        "target_default": true
+      },
+      "target": {
+        "target_type": "terminal.unix_linux_endpoint",
+        "specify_on_workflow_start": true
+      }
+    },
+    "object_type": "definition_workflow",
+    "actions": [
+      {
+        "unique_name": "definition_activity_01T8ZTO0T5TSB2wzEAeWTRSRGKpqk5lBcyK",
+        "name": "Tufin SecureCloud - Create Cluster",
+        "title": "Tufin SecureCloud - Create Cluster",
+        "type": "workflow.atomic_workflow",
+        "base_type": "subworkflow",
+        "properties": {
+          "continue_on_failure": false,
+          "display_name": "Tufin SecureCloud - Create Cluster",
+          "input": {
+            "variable_workflow_01T8ZV5ILMT8F66hUagEOTJ1Vrl4X28JTxU": "$workflow.definition_workflow_01T8ZTCDQYORT4g6W087ZPX9Kkssb8ZWrlQ.input.variable_workflow_01T90AEMB3FNI5TlpzR5izVJRnBVB2PQnVY$",
+            "variable_workflow_01T8ZVUJC626B64M3xj7aO283hvaR2OxJlR": "$workflow.definition_workflow_01T8ZTCDQYORT4g6W087ZPX9Kkssb8ZWrlQ.input.variable_workflow_01T90BB4TDQHS2SER5j9pPWpOcAllT3b6Lg$",
+            "variable_workflow_01T8ZWIRHVSY319WZQPRHmoVo3Rb6cOtN7D": "$workflow.definition_workflow_01T8ZTCDQYORT4g6W087ZPX9Kkssb8ZWrlQ.input.variable_workflow_01T90ARA21F911O5M7hyCs5clz2tu7CUWgH$"
+          },
+          "runtime_user": {
+            "target_default": true
+          },
+          "skip_execution": false,
+          "target": {
+            "override_workflow_target": true,
+            "target_id": "definition_target_01PWZLT9GER3Q5MT13QpgdehNObJ765ywlu",
+            "target_type": "web-service.endpoint"
+          },
+          "workflow_id": "definition_workflow_01Q6ZHZLZV8FD1YxR8B7uFxGsIaZeHtUzRZ"
+        },
+        "object_type": "definition_activity"
+      },
+      {
+        "unique_name": "definition_activity_01T90J6BH86212LLHOZvSrlwJD2wcJQgxzm",
+        "name": "Condition Block",
+        "title": "Condition Block",
+        "type": "logic.if_else",
+        "base_type": "activity",
+        "properties": {
+          "continue_on_failure": false,
+          "display_name": "Condition Block",
+          "skip_execution": false
+        },
+        "object_type": "definition_activity",
+        "blocks": [
+          {
+            "unique_name": "definition_activity_01T90J6BVGXNL69zzXgDbDLE96vb8TA25rQ",
+            "name": "Condition Branch",
+            "title": "Creation Failed",
+            "type": "logic.condition_block",
+            "base_type": "activity",
+            "properties": {
+              "condition": {
+                "left_operand": "$activity.definition_activity_01T8ZTO0T5TSB2wzEAeWTRSRGKpqk5lBcyK.output.succeeded$",
+                "operator": "eq",
+                "right_operand": false
+              },
+              "continue_on_failure": false,
+              "display_name": "Creation Failed",
+              "skip_execution": false
+            },
+            "object_type": "definition_activity",
+            "actions": [
+              {
+                "unique_name": "definition_activity_01T90K3SGGSOF3oGBtqcfYqX8rlyrVdA5Sq",
+                "name": "Completed",
+                "title": "Failed",
+                "type": "logic.completed",
+                "base_type": "activity",
+                "properties": {
+                  "completion_type": "failed-completed",
+                  "continue_on_failure": false,
+                  "display_name": "Failed",
+                  "result_message": "Unable to create a new cluster in SecureCloud: $activity.definition_activity_01T8ZTO0T5TSB2wzEAeWTRSRGKpqk5lBcyK.output.error.message$",
+                  "skip_execution": false
+                },
+                "object_type": "definition_activity"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "unique_name": "definition_activity_01T908CRYLFJ50iytbl1xH90fV84u6ZlXRi",
+        "name": "Tufin SecureCloud - Get Cluster Install Command",
+        "title": "Tufin SecureCloud - Get Cluster Install Command",
+        "type": "workflow.atomic_workflow",
+        "base_type": "subworkflow",
+        "properties": {
+          "continue_on_failure": false,
+          "display_name": "Tufin SecureCloud - Get Cluster Install Command",
+          "input": {
+            "variable_workflow_01Q6Z7X2VOQKW0S32GouNjPd3fPRdjh6T98": "$workflow.definition_workflow_01T8ZTCDQYORT4g6W087ZPX9Kkssb8ZWrlQ.input.variable_workflow_01T90ARA21F911O5M7hyCs5clz2tu7CUWgH$",
+            "variable_workflow_01Q6Z7X2VOUMH6qpu9pM1KCMSsSFKG2rtBK": "$workflow.definition_workflow_01T8ZTCDQYORT4g6W087ZPX9Kkssb8ZWrlQ.input.variable_workflow_01T90BB4TDQHS2SER5j9pPWpOcAllT3b6Lg$",
+            "variable_workflow_01T9099JX6D8R3CrvRS4aiJtVrGQE3dZsEh": "$workflow.definition_workflow_01T8ZTCDQYORT4g6W087ZPX9Kkssb8ZWrlQ.input.variable_workflow_01T90AEMB3FNI5TlpzR5izVJRnBVB2PQnVY$"
+          },
+          "runtime_user": {
+            "target_default": true
+          },
+          "skip_execution": false,
+          "target": {
+            "override_workflow_target": true,
+            "target_id": "definition_target_01PWZLT9GER3Q5MT13QpgdehNObJ765ywlu",
+            "target_type": "web-service.endpoint"
+          },
+          "workflow_id": "definition_workflow_01Q6Z7X322OMK7OgoGgVCBxMrjjUBLl87mQ"
+        },
+        "object_type": "definition_activity"
+      },
+      {
+        "unique_name": "definition_activity_01T90LIRDTZ0C6arBd0K02zu0WKGlC4U4FC",
+        "name": "Condition Block",
+        "title": "Condition Block",
+        "type": "logic.if_else",
+        "base_type": "activity",
+        "properties": {
+          "continue_on_failure": false,
+          "display_name": "Condition Block",
+          "skip_execution": false
+        },
+        "object_type": "definition_activity",
+        "blocks": [
+          {
+            "unique_name": "definition_activity_01T90LIRNZLZC50UivcboDfU17nYtZJahVW",
+            "name": "Condition Branch",
+            "title": "No Install Command Returned",
+            "type": "logic.condition_block",
+            "base_type": "activity",
+            "properties": {
+              "condition": {
+                "left_operand": {
+                  "left_operand": "$activity.definition_activity_01T908CRYLFJ50iytbl1xH90fV84u6ZlXRi.output.succeeded$",
+                  "operator": "eq",
+                  "right_operand": false
+                },
+                "operator": "or",
+                "right_operand": {
+                  "left_operand": "$activity.definition_activity_01T908CRYLFJ50iytbl1xH90fV84u6ZlXRi.output.variable_workflow_01Q6Z91TUIJIJ6ITWKcFMhrNdHiCi2K4BQ6$",
+                  "operator": "eq",
+                  "right_operand": ""
+                }
+              },
+              "continue_on_failure": false,
+              "display_name": "No Install Command Returned",
+              "skip_execution": false
+            },
+            "object_type": "definition_activity",
+            "actions": [
+              {
+                "unique_name": "definition_activity_01T90N292YFY63k6DCwwwz6Gs79CjqVtJe3",
+                "name": "Completed",
+                "title": "Failed",
+                "type": "logic.completed",
+                "base_type": "activity",
+                "properties": {
+                  "completion_type": "failed-completed",
+                  "continue_on_failure": false,
+                  "display_name": "Failed",
+                  "result_message": "Install command not successfully returned",
+                  "skip_execution": false
+                },
+                "object_type": "definition_activity"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "unique_name": "definition_activity_01T90SU3LBTG10duhIs4k41At0ZaVaFOihV",
+        "name": "Execute Linux/Unix SSH Command",
+        "title": "Execute Install Command",
+        "type": "terminal.ssh_command",
+        "base_type": "activity",
+        "properties": {
+          "action_timeout": 180,
+          "command": "$activity.definition_activity_01T908CRYLFJ50iytbl1xH90fV84u6ZlXRi.output.variable_workflow_01Q6Z91TUIJIJ6ITWKcFMhrNdHiCi2K4BQ6$",
+          "command_timeout": 60,
+          "continue_on_failure": false,
+          "display_name": "Execute Install Command",
+          "runtime_user": {
+            "target_default": true
+          },
+          "skip_execution": false,
+          "target": {
+            "use_workflow_target": true
+          }
+        },
+        "object_type": "definition_activity"
+      }
+    ],
+    "categories": [
+      "category_01G4JLUINA0E65x8iCa6Behj8y9V0ZE9f8O"
+    ]
+  },
+  "categories": {
+    "category_01G4JLUINA0E65x8iCa6Behj8y9V0ZE9f8O": {
+      "unique_name": "category_01G4JLUINA0E65x8iCa6Behj8y9V0ZE9f8O",
+      "name": "Tufin",
+      "title": "Tufin",
+      "type": "basic.category",
+      "base_type": "category",
+      "description": "Tufin Orchestration Suite",
+      "category_type": "custom",
+      "object_type": "category"
+    }
+  },
+  "targets": {
+    "definition_target_01PWZLT9GER3Q5MT13QpgdehNObJ765ywlu": {
+      "unique_name": "definition_target_01PWZLT9GER3Q5MT13QpgdehNObJ765ywlu",
+      "name": "Generic Bank",
+      "title": "Generic Bank",
+      "type": "web-service.endpoint",
+      "base_type": "target",
+      "object_type": "definition_target",
+      "properties": {
+        "disable_certificate_validation": false,
+        "display_name": "Generic Bank",
+        "host": "generic-bank.securecloud.tufin.io",
+        "ignore_proxy": false,
+        "no_runtime_user": true,
+        "protocol": "https"
+      }
+    }
+  },
+  "atomic_workflows": [
+    "definition_workflow_01Q6ZHZLZV8FD1YxR8B7uFxGsIaZeHtUzRZ",
+    "definition_workflow_01Q6Z7X322OMK7OgoGgVCBxMrjjUBLl87mQ"
+  ]
+}
